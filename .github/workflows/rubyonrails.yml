@@ -29,6 +29,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       # Add or replace dependency steps here
+      - name: Setup Ruby
+        uses: actions/checkout@v4
         with:
           ruby-version: '3.2.2'
       # Add or replace database setup steps here
