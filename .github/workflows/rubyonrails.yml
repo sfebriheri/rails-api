@@ -58,6 +58,8 @@ jobs:
       - name: Generate binstubs
         run: bundle binstubs bundler-audit brakeman rubocop
       # Add or replace any other lints here
+      - name: Auto-correct RuboCop offenses
+        run: bin/rubocop --auto-correct
       - name: Security audit dependencies
         run: bin/bundler-audit --update
       - name: Security audit application code
