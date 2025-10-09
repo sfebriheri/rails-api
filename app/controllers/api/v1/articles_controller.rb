@@ -1,6 +1,6 @@
 module Api
   module V1
-    class ArticlesController < ApplicationController
+    class ArticlesController < Api::BaseController
       before_action :set_article, only: [:show, :update, :destroy]
 
       # GET /api/v1/articles
