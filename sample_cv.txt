@@ -1,0 +1,61 @@
+JOHN SMITH
+Senior Software Engineer | AI/ML Specialist
+Email: john.smith@email.com | Phone: (555) 123-4567
+
+PROFESSIONAL SUMMARY
+Experienced software engineer with 5+ years of expertise in backend development, 
+cloud infrastructure, and AI/ML implementations. Proven track record of scaling 
+applications to handle millions of users and leading cross-functional teams.
+
+TECHNICAL SKILLS
+- Programming: Python, Node.js, JavaScript, React
+- Databases: PostgreSQL, MongoDB, Redis
+- Cloud: AWS (EC2, S3, Lambda, RDS), Docker, Kubernetes
+- APIs: REST, GraphQL
+- AI/ML: TensorFlow, LLM Integration, RAG Systems
+
+PROFESSIONAL EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc. | 2021 - Present
+• Led development of AI-powered recommendation system serving 2M+ daily users, 
+  improving engagement by 35%
+• Architected microservices infrastructure on AWS, reducing system latency by 40%
+• Built RAG-based chatbot using OpenAI GPT-4 and vector databases, achieving 92% 
+  user satisfaction
+• Mentored 3 junior developers and established code review processes that reduced 
+  bugs by 50%
+
+Software Engineer | StartupXYZ | 2019 - 2021
+• Developed scalable backend APIs using Node.js and PostgreSQL, supporting 500K+ users
+• Implemented real-time data processing pipeline using Apache Kafka and Redis
+• Built machine learning models for fraud detection, reducing false positives by 60%
+• Collaborated with product team to design new features, increasing user retention by 25%
+
+Junior Software Developer | WebSolutions Ltd. | 2018 - 2019
+• Developed responsive web applications using React and Node.js
+• Participated in agile development processes and daily standups
+• Contributed to open-source projects and learned modern development practices
+
+KEY ACHIEVEMENTS
+• Performance: Reduced database query time by 70% through optimization strategies
+• Scaling: Successfully scaled application from 10K to 2M+ daily active users
+• Cost Optimization: Reduced AWS infrastructure costs by $15K monthly while improving performance
+• Leadership: Led cross-functional team of 8 people to deliver major feature 2 weeks ahead of schedule
+• Innovation: Pioneered LLM-based features that became core product differentiator
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of Technology | 2014 - 2018
+Relevant Coursework: Data Structures, Algorithms, Database Systems, Machine Learning
+
+CERTIFICATIONS
+• AWS Certified Solutions Architect - Associate (2022)
+• Google Cloud Professional Data Engineer (2021)
+• MongoDB Certified Developer (2020)
+
+PERSONAL QUALITIES
+• Communication: Excellent written and verbal communication skills
+• Learning Mindset: Continuously learning new technologies, completed 15+ courses in past year
+• Teamwork: Strong collaborative skills in remote and in-person environments
+• Problem Solving: Analytical approach to complex problems with creative solutions
+• Leadership: Natural leader who enjoys mentoring others and driving technical initiatives

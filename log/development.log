@@ -385,3 +385,816 @@ Started GET "/.well-known/appspecific/com.chrome.devtools.json" for 127.0.0.1 at
   
 ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
   
+  [1m[35m (1.6ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (3.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (4.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+Migrating to CreateDocuments (20241201000001)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (34.9ms)[0m  [1m[35mCREATE TABLE "documents" ("id" bigserial primary key, "filename" character varying NOT NULL, "content_type" character varying NOT NULL, "file_size" integer NOT NULL, "file_path" text NOT NULL, "document_type" character varying NOT NULL, "extracted_text" text, "metadata" json DEFAULT '{}', "checksum" character varying, "processed" boolean DEFAULT FALSE, "processed_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (4.0ms)[0m  [1m[35mCREATE INDEX "index_documents_on_document_type" ON "documents" ("document_type")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_documents_on_checksum" ON "documents" ("checksum")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_documents_on_processed" ON "documents" ("processed")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (1.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241201000001') RETURNING "version"[0m
+  [1m[36mTRANSACTION (1.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateEvaluationJobs (20241201000002)
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (24.2ms)[0m  [1m[35mCREATE TABLE "evaluation_jobs" ("id" bigserial primary key, "job_id" character varying NOT NULL, "job_title" character varying NOT NULL, "cv_document_id" bigint NOT NULL, "project_document_id" bigint NOT NULL, "status" character varying DEFAULT 'queued' NOT NULL, "cv_match_rate" decimal(3,2), "cv_feedback" text, "project_score" decimal(3,1), "project_feedback" text, "overall_summary" text, "processing_steps" json DEFAULT '{}', "error_message" text, "retry_count" integer DEFAULT 0, "started_at" timestamp(6), "completed_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_c10c63f13b"
+FOREIGN KEY ("cv_document_id")
+  REFERENCES "documents" ("id")
+, CONSTRAINT "fk_rails_ae8c60a404"
+FOREIGN KEY ("project_document_id")
+  REFERENCES "documents" ("id")
+)[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_evaluation_jobs_on_job_id" ON "evaluation_jobs" ("job_id")[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_cv_document_id" ON "evaluation_jobs" ("cv_document_id")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_project_document_id" ON "evaluation_jobs" ("project_document_id")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_status" ON "evaluation_jobs" ("status")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_job_title" ON "evaluation_jobs" ("job_title")[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_created_at" ON "evaluation_jobs" ("created_at")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241201000002') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateVectorEmbeddings (20241201000003)
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.5ms)[0m  [1m[35mCREATE TABLE "vector_embeddings" ("id" bigserial primary key, "document_id" bigint NOT NULL, "content_chunk" text NOT NULL, "embedding_vector" json NOT NULL, "chunk_index" integer NOT NULL, "metadata" json DEFAULT '{}', "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_a9121de589"
+FOREIGN KEY ("document_id")
+  REFERENCES "documents" ("id")
+)[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id" ON "vector_embeddings" ("document_id")[0m
+  [1m[35m (10.6ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id_and_chunk_index" ON "vector_embeddings" ("document_id", "chunk_index")[0m
+  [1m[35m (25.9ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id" ON "vector_embeddings" ("document_id")[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT pg_advisory_unlock(7650501214609530165)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+Migrating to CreateVectorEmbeddings (20241201000003)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.9ms)[0m  [1m[35mCREATE TABLE "vector_embeddings" ("id" bigserial primary key, "document_id" bigint NOT NULL, "content_chunk" text NOT NULL, "embedding_vector" json NOT NULL, "chunk_index" integer NOT NULL, "metadata" json DEFAULT '{}', "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_a9121de589"
+FOREIGN KEY ("document_id")
+  REFERENCES "documents" ("id")
+)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id" ON "vector_embeddings" ("document_id")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id_and_chunk_index" ON "vector_embeddings" ("document_id", "chunk_index")[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id" ON "vector_embeddings" ("document_id")[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (51.1ms)[0m  [1m[35mDROP DATABASE IF EXISTS "modern_platform_development"[0m
+  [1m[35m (38.0ms)[0m  [1m[35mDROP DATABASE IF EXISTS "modern_platform_test"[0m
+  [1m[35m (224.5ms)[0m  [1m[35mCREATE DATABASE "modern_platform_development" ENCODING = 'unicode'[0m
+  [1m[35m (144.7ms)[0m  [1m[35mCREATE DATABASE "modern_platform_test" ENCODING = 'unicode'[0m
+  [1m[35mSQL (1.4ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE IF EXISTS "articles" CASCADE[0m
+  [1m[35m (8.0ms)[0m  [1m[35mCREATE TABLE "articles" ("id" bigserial primary key, "title" character varying, "body" text, "published" boolean DEFAULT FALSE, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (7.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251006000001)[0m
+  [1m[35m (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20241201000003),
+(20241201000002),
+(20241201000001);[0m
+  [1m[35m (3.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (2.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-10-10 07:15:39.525928', '2025-10-10 07:15:39.525933') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'ee0dc199ec04a7265e4c539d931ed2f598406613', '2025-10-10 07:15:39.533592', '2025-10-10 07:15:39.533594') RETURNING "key"[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "articles" CASCADE[0m
+  [1m[35m (8.1ms)[0m  [1m[35mCREATE TABLE "articles" ("id" bigserial primary key, "title" character varying, "body" text, "published" boolean DEFAULT FALSE, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (3.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251006000001)[0m
+  [1m[35m (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20241201000003),
+(20241201000002),
+(20241201000001);[0m
+  [1m[35m (4.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.9ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (1.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-10-10 07:15:39.609159', '2025-10-10 07:15:39.609163') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Update (2.5ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2025-10-10 07:15:39.616642' WHERE "ar_internal_metadata"."key" = 'environment'[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'ee0dc199ec04a7265e4c539d931ed2f598406613', '2025-10-10 07:15:39.621284', '2025-10-10 07:15:39.621287') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for 127.0.0.1 at 2025-10-10 14:16:13 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.7ms | Allocations: 382)
+Completed 200 OK in 322ms (Views: 4.7ms | ActiveRecord: 0.0ms | Allocations: 285476)
+
+
+Started GET "/?ide_webview_request_time=1760080575737" for ::1 at 2025-10-10 14:16:15 +0700
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"ide_webview_request_time"=>"1760080575737"}
+  Rendering vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.1ms | Allocations: 13)
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.0ms | Allocations: 215)
+
+
+Started GET "/@vite/client" for ::1 at 2025-10-10 14:16:15 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/@vite/client"):
+  
+Started GET "/health" for ::1 at 2025-10-10 14:16:24 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/health"):
+  
+Started GET "/api/v1/articles" for ::1 at 2025-10-10 14:16:30 +0700
+Processing by Api::V1::ArticlesController#index as */*
+  Parameters: {"article"=>{}}
+  [1m[36mArticle Load (0.8ms)[0m  [1m[34mSELECT "articles".* FROM "articles"[0m
+  ↳ app/controllers/api/v1/articles_controller.rb:9:in `index'
+Completed 200 OK in 10ms (Views: 1.7ms | ActiveRecord: 10.0ms | Allocations: 2029)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for 127.0.0.1 at 2025-10-10 14:16:58 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/" for 127.0.0.1 at 2025-10-10 14:17:03 +0700
+Processing by Rails::WelcomeController#index as HTML
+  Rendering vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.1ms | Allocations: 13)
+Completed 200 OK in 2ms (Views: 0.8ms | ActiveRecord: 0.0ms | Allocations: 212)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for 127.0.0.1 at 2025-10-10 14:17:03 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/api/v1/articles" for ::1 at 2025-10-10 14:17:39 +0700
+Processing by Api::V1::ArticlesController#index as */*
+  [1m[36mArticle Load (1.1ms)[0m  [1m[34mSELECT "articles".* FROM "articles"[0m
+  ↳ app/controllers/api/v1/articles_controller.rb:9:in `index'
+Completed 200 OK in 4ms (Views: 2.7ms | ActiveRecord: 1.1ms | Allocations: 619)
+
+
+Started POST "/api/v1/job_descriptions" for ::1 at 2025-10-10 14:17:47 +0700
+Processing by Api::V1::JobDescriptionsController#create as */*
+  Parameters: {"job_description"=>{"title"=>"Senior Software Engineer", "content"=>"We are looking for a senior software engineer with 5+ years of experience in Ruby on Rails, JavaScript, and cloud technologies. The ideal candidate should have experience with microservices, API design, and agile development practices.", "document_type"=>"job_description"}}
+Can't verify CSRF token authenticity.
+Completed 400 Bad Request in 2ms (Views: 1.3ms | ActiveRecord: 0.0ms | Allocations: 307)
+
+
+Started GET "/api/v1/job_descriptions" for ::1 at 2025-10-10 14:18:11 +0700
+Processing by Api::V1::JobDescriptionsController#index as */*
+Completed 500 Internal Server Error in 20ms (ActiveRecord: 3.8ms | Allocations: 4704)
+
+
+  
+ActiveRecord::StatementInvalid (PG::UndefinedTable: ERROR:  relation "documents" does not exist
+LINE 10:  WHERE a.attrelid = '"documents"'::regclass
+                             ^
+):
+  
+Started GET "/api/v1/job_descriptions" for ::1 at 2025-10-10 14:18:16 +0700
+Processing by Api::V1::JobDescriptionsController#index as */*
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 1.2ms | Allocations: 1167)
+
+
+  
+ActiveRecord::StatementInvalid (PG::UndefinedTable: ERROR:  relation "documents" does not exist
+LINE 10:  WHERE a.attrelid = '"documents"'::regclass
+                             ^
+):
+  
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateArticles (20251006000001)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.8ms)[0m  [1m[35mDROP TABLE "articles"[0m
+  [1m[36mActiveRecord::SchemaMigration Destroy (0.8ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = '20251006000001'[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateVectorEmbeddings (20241201000003)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.8ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (8342.1ms)[0m  [1m[35mDROP DATABASE IF EXISTS "modern_platform_development"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (62.5ms)[0m  [1m[35mDROP DATABASE IF EXISTS "modern_platform_development"[0m
+  [1m[35m (55.7ms)[0m  [1m[35mDROP DATABASE IF EXISTS "modern_platform_test"[0m
+  [1m[35m (173.7ms)[0m  [1m[35mCREATE DATABASE "modern_platform_development" ENCODING = 'unicode'[0m
+  [1m[35m (99.4ms)[0m  [1m[35mCREATE DATABASE "modern_platform_test" ENCODING = 'unicode'[0m
+  [1m[35m (9.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.7ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-10-10 07:19:46.239385', '2025-10-10 07:19:46.239391') RETURNING "key"[0m
+Migrating to CreateDocuments (20241201000001)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.9ms)[0m  [1m[35mCREATE TABLE "documents" ("id" bigserial primary key, "filename" character varying NOT NULL, "content_type" character varying NOT NULL, "file_size" integer NOT NULL, "file_path" text NOT NULL, "document_type" character varying NOT NULL, "extracted_text" text, "metadata" json DEFAULT '{}', "checksum" character varying, "processed" boolean DEFAULT FALSE, "processed_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_documents_on_document_type" ON "documents" ("document_type")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_documents_on_checksum" ON "documents" ("checksum")[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE INDEX "index_documents_on_processed" ON "documents" ("processed")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (1.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241201000001') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateEvaluationJobs (20241201000002)
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE TABLE "evaluation_jobs" ("id" bigserial primary key, "job_id" character varying NOT NULL, "job_title" character varying NOT NULL, "cv_document_id" bigint NOT NULL, "project_document_id" bigint NOT NULL, "status" character varying DEFAULT 'queued' NOT NULL, "cv_match_rate" decimal(3,2), "cv_feedback" text, "project_score" decimal(3,1), "project_feedback" text, "overall_summary" text, "processing_steps" json DEFAULT '{}', "error_message" text, "retry_count" integer DEFAULT 0, "started_at" timestamp(6), "completed_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_c10c63f13b"
+FOREIGN KEY ("cv_document_id")
+  REFERENCES "documents" ("id")
+, CONSTRAINT "fk_rails_ae8c60a404"
+FOREIGN KEY ("project_document_id")
+  REFERENCES "documents" ("id")
+)[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_evaluation_jobs_on_job_id" ON "evaluation_jobs" ("job_id")[0m
+  [1m[35m (12.2ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_cv_document_id" ON "evaluation_jobs" ("cv_document_id")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_project_document_id" ON "evaluation_jobs" ("project_document_id")[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_status" ON "evaluation_jobs" ("status")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_job_title" ON "evaluation_jobs" ("job_title")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_created_at" ON "evaluation_jobs" ("created_at")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241201000002') RETURNING "version"[0m
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateVectorEmbeddings (20241201000003)
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.6ms)[0m  [1m[35mCREATE TABLE "vector_embeddings" ("id" bigserial primary key, "document_id" bigint NOT NULL, "content_chunk" text NOT NULL, "embedding_vector" json NOT NULL, "chunk_index" integer NOT NULL, "metadata" json DEFAULT '{}', "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_a9121de589"
+FOREIGN KEY ("document_id")
+  REFERENCES "documents" ("id")
+)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id" ON "vector_embeddings" ("document_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_vector_embeddings_on_document_id_and_chunk_index" ON "vector_embeddings" ("document_id", "chunk_index")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241201000003') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateArticles (20251006000001)
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.7ms)[0m  [1m[35mCREATE TABLE "articles" ("id" bigserial primary key, "title" character varying, "body" text, "published" boolean DEFAULT FALSE, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251006000001') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api/v1/job_descriptions" for ::1 at 2025-10-10 14:20:16 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::JobDescriptionsController#index as */*
+  [1m[36mDocument Load (3.9ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."document_type" = $1 ORDER BY "documents"."created_at" DESC[0m  [["document_type", "job_description"]]
+  ↳ app/controllers/api/v1/job_descriptions_controller.rb:9:in `map'
+Completed 200 OK in 68ms (Views: 0.3ms | ActiveRecord: 15.6ms | Allocations: 15019)
+
+
+Started POST "/api/v1/job_descriptions" for ::1 at 2025-10-10 14:20:38 +0700
+Processing by Api::V1::JobDescriptionsController#create as */*
+  Parameters: {"file"=>#<ActionDispatch::Http::UploadedFile:0x00000001080de5b8 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-33196-y3c3ob.txt>, @content_type="text/plain", @original_filename="test_job_description.txt", @headers="Content-Disposition: form-data; name=\"file\"; filename=\"test_job_description.txt\"\r\nContent-Type: text/plain\r\n">}
+Can't verify CSRF token authenticity.
+Completed 400 Bad Request in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 204)
+
+
+Started POST "/api/v1/upload" for ::1 at 2025-10-10 14:20:44 +0700
+Processing by Api::V1::DocumentsController#upload as */*
+  Parameters: {"cv"=>#<ActionDispatch::Http::UploadedFile:0x00000001080d2d08 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-33196-p3oy3q.txt>, @content_type="text/plain", @original_filename="test_job_description.txt", @headers="Content-Disposition: form-data; name=\"cv\"; filename=\"test_job_description.txt\"\r\nContent-Type: text/plain\r\n">, "project_report"=>#<ActionDispatch::Http::UploadedFile:0x00000001080d2cb8 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-33196-1pjcjd.txt>, @content_type="text/plain", @original_filename="test_job_description.txt", @headers="Content-Disposition: form-data; name=\"project_report\"; filename=\"test_job_description.txt\"\r\nContent-Type: text/plain\r\n">, "job_title"=>"Senior Software Engineer"}
+Can't verify CSRF token authenticity.
+Completed 400 Bad Request in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 228)
+
+
+Started POST "/api/v1/evaluate" for ::1 at 2025-10-10 14:21:04 +0700
+Processing by Api::V1::EvaluationsController#create as */*
+  Parameters: {"job_title"=>"Senior Backend Engineer", "cv_document_id"=>999, "project_document_id"=>999, "evaluation"=>{"job_title"=>"Senior Backend Engineer", "cv_document_id"=>999, "project_document_id"=>999}}
+Can't verify CSRF token authenticity.
+  [1m[36mDocument Load (10.3ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 999], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:10:in `create'
+Completed 404 Not Found in 52ms (Views: 0.1ms | ActiveRecord: 22.4ms | Allocations: 2289)
+
+
+Started GET "/api/v1/result/non-existent-job-id" for ::1 at 2025-10-10 14:21:10 +0700
+Processing by Api::V1::EvaluationsController#show as */*
+  Parameters: {"id"=>"non-existent-job-id"}
+  [1m[36mEvaluationJob Load (3.4ms)[0m  [1m[34mSELECT "evaluation_jobs".* FROM "evaluation_jobs" WHERE "evaluation_jobs"."job_id" = $1 LIMIT $2[0m  [["job_id", "non-existent-job-id"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:49:in `show'
+Completed 404 Not Found in 30ms (Views: 0.1ms | ActiveRecord: 7.1ms | Allocations: 7238)
+
+
+Started GET "/api/v1/case_studies" for ::1 at 2025-10-10 14:21:15 +0700
+  
+ActionController::RoutingError (uninitialized constant Api::V1::CaseStudiesController):
+  
+Started GET "/api/v1/case_studies" for ::1 at 2025-10-10 14:21:21 +0700
+  
+ActionController::RoutingError (uninitialized constant Api::V1::CaseStudiesController):
+  
+Sidekiq server started
+Started POST "/api/v1/evaluate" for ::1 at 2025-10-10 14:22:05 +0700
+Processing by Api::V1::EvaluationsController#create as */*
+  Parameters: {"evaluation"=>{}}
+Can't verify CSRF token authenticity.
+Completed 400 Bad Request in 2ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 475)
+
+
+Started POST "/api/v1/articles" for ::1 at 2025-10-10 14:22:11 +0700
+Processing by Api::V1::ArticlesController#create as */*
+  Parameters: {"article"=>{"title"=>"Test Article", "body"=>"This is a test article for the API testing.", "published"=>true}}
+Can't verify CSRF token authenticity.
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/articles_controller.rb:21:in `create'
+  [1m[36mArticle Create (3.4ms)[0m  [1m[32mINSERT INTO "articles" ("title", "body", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Test Article"], ["body", "This is a test article for the API testing."], ["published", true], ["created_at", "2025-10-10 07:22:11.858260"], ["updated_at", "2025-10-10 07:22:11.858260"]]
+  ↳ app/controllers/api/v1/articles_controller.rb:21:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/articles_controller.rb:21:in `create'
+Completed 201 Created in 30ms (Views: 0.7ms | ActiveRecord: 8.8ms | Allocations: 8337)
+
+
+Started GET "/api/v1/articles" for ::1 at 2025-10-10 14:22:17 +0700
+Processing by Api::V1::ArticlesController#index as */*
+  [1m[36mArticle Load (1.0ms)[0m  [1m[34mSELECT "articles".* FROM "articles"[0m
+  ↳ app/controllers/api/v1/articles_controller.rb:9:in `index'
+Completed 200 OK in 6ms (Views: 2.7ms | ActiveRecord: 1.0ms | Allocations: 813)
+
+
+Started POST "/api/v1/upload" for ::1 at 2025-10-10 14:26:25 +0700
+Processing by Api::V1::DocumentsController#upload as JSON
+  Parameters: {"cv"=>#<ActionDispatch::Http::UploadedFile:0x000000010a619df0 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-33196-4a1gsr.pdf>, @content_type="application/pdf", @original_filename="sample_cv.pdf", @headers="Content-Disposition: form-data; name=\"cv\"; filename=\"sample_cv.pdf\"\r\nContent-Type: application/pdf\r\n">, "job_title"=>"Senior Software Engineer"}
+Can't verify CSRF token authenticity.
+Completed 400 Bad Request in 5ms (Views: 1.3ms | ActiveRecord: 0.0ms | Allocations: 115)
+
+
+Started POST "/api/v1/upload" for ::1 at 2025-10-10 14:27:03 +0700
+Processing by Api::V1::DocumentsController#upload as JSON
+  Parameters: {"cv"=>#<ActionDispatch::Http::UploadedFile:0x000000010a615d40 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-33196-rf7um0.pdf>, @content_type="application/pdf", @original_filename="sample_cv.pdf", @headers="Content-Disposition: form-data; name=\"cv\"; filename=\"sample_cv.pdf\"\r\nContent-Type: application/pdf\r\n">, "project_report"=>#<ActionDispatch::Http::UploadedFile:0x000000010a615cf0 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-33196-y94oa1.pdf>, @content_type="application/pdf", @original_filename="sample_project_report.pdf", @headers="Content-Disposition: form-data; name=\"project_report\"; filename=\"sample_project_report.pdf\"\r\nContent-Type: application/pdf\r\n">, "job_title"=>"Senior Software Engineer"}
+Can't verify CSRF token authenticity.
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Exists? (4.3ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 LIMIT $2[0m  [["checksum", "c89b36e7b9b07a566cb1ab99f179fdf821f115a5e045ee64042b63e8449094d6"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Create (3.3ms)[0m  [1m[32mINSERT INTO "documents" ("filename", "content_type", "file_size", "file_path", "document_type", "extracted_text", "metadata", "checksum", "processed", "processed_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["filename", "sample_cv.pdf"], ["content_type", "application/pdf"], ["file_size", 25823], ["file_path", "/Users/mymac/Downloads/rails-api/storage/uploads/20251010_072703_a293ff27b9b61096_sample_cv.pdf"], ["document_type", "cv"], ["extracted_text", nil], ["metadata", "{}"], ["checksum", "c89b36e7b9b07a566cb1ab99f179fdf821f115a5e045ee64042b63e8449094d6"], ["processed", false], ["processed_at", nil], ["created_at", "2025-10-10 07:27:03.475886"], ["updated_at", "2025-10-10 07:27:03.475886"]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 LIMIT $2[0m  [["checksum", "106532546d4ce99e4ced2de11720577527677352a29ed7e6359f1a117146b63b"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Create (1.1ms)[0m  [1m[32mINSERT INTO "documents" ("filename", "content_type", "file_size", "file_path", "document_type", "extracted_text", "metadata", "checksum", "processed", "processed_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["filename", "sample_project_report.pdf"], ["content_type", "application/pdf"], ["file_size", 24389], ["file_path", "/Users/mymac/Downloads/rails-api/storage/uploads/20251010_072703_c2693e6f715c44ca_sample_project_report.pdf"], ["document_type", "project_report"], ["extracted_text", nil], ["metadata", "{}"], ["checksum", "106532546d4ce99e4ced2de11720577527677352a29ed7e6359f1a117146b63b"], ["processed", false], ["processed_at", nil], ["created_at", "2025-10-10 07:27:03.490368"], ["updated_at", "2025-10-10 07:27:03.490368"]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+DEPRECATION WARNING: `wait: :exponentially_longer` will actually wait polynomially longer and is therefore deprecated. Prefer `wait: :polynomially_longer` to avoid confusion and keep the same behavior. (called from <class:ExtractTextJob> at /Users/mymac/Downloads/rails-api/app/jobs/extract_text_job.rb:4)
+File upload failed: undefined method `perform_async' for ExtractTextJob:Class
+Completed 500 Internal Server Error in 129ms (Views: 0.2ms | ActiveRecord: 12.2ms | Allocations: 21500)
+
+
+Started POST "/api/v1/upload" for ::1 at 2025-10-10 14:28:06 +0700
+Processing by Api::V1::DocumentsController#upload as */*
+  Parameters: {"cv"=>#<ActionDispatch::Http::UploadedFile:0x000000010a9d4440 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-33196-lbc7kz.pdf>, @content_type="application/pdf", @original_filename="sample_cv.pdf", @headers="Content-Disposition: form-data; name=\"cv\"; filename=\"sample_cv.pdf\"\r\nContent-Type: application/pdf\r\n">, "project_report"=>#<ActionDispatch::Http::UploadedFile:0x000000010a9d3f40 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-33196-pftzo.pdf>, @content_type="application/pdf", @original_filename="sample_project_report.pdf", @headers="Content-Disposition: form-data; name=\"project_report\"; filename=\"sample_project_report.pdf\"\r\nContent-Type: application/pdf\r\n">, "job_title"=>"Senior Software Engineer"}
+Can't verify CSRF token authenticity.
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 LIMIT $2[0m  [["checksum", "c89b36e7b9b07a566cb1ab99f179fdf821f115a5e045ee64042b63e8449094d6"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+File upload failed: Validation failed: Checksum has already been taken
+Completed 500 Internal Server Error in 29ms (Views: 0.2ms | ActiveRecord: 6.9ms | Allocations: 10875)
+
+
+  [1m[36mDocument Load (0.8ms)[0m  [1m[34mSELECT "documents".* FROM "documents" /* loading for pp */ LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mDocument Load (1.1ms)[0m  [1m[34mSELECT "documents".* FROM "documents"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mVectorEmbedding Load (2.9ms)[0m  [1m[34mSELECT "vector_embeddings".* FROM "vector_embeddings" WHERE "vector_embeddings"."document_id" = $1[0m  [["document_id", 1]]
+  [1m[36mDocument Destroy (4.5ms)[0m  [1m[31mDELETE FROM "documents" WHERE "documents"."id" = $1[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mVectorEmbedding Load (0.2ms)[0m  [1m[34mSELECT "vector_embeddings".* FROM "vector_embeddings" WHERE "vector_embeddings"."document_id" = $1[0m  [["document_id", 2]]
+  [1m[36mDocument Destroy (0.4ms)[0m  [1m[31mDELETE FROM "documents" WHERE "documents"."id" = $1[0m  [["id", 2]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mDocument Load (0.7ms)[0m  [1m[34mSELECT "documents".* FROM "documents"[0m
+Started POST "/api/v1/upload" for ::1 at 2025-10-10 14:33:25 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::DocumentsController#upload as */*
+  Parameters: {"cv"=>#<ActionDispatch::Http::UploadedFile:0x0000000105b82bc0 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-52704-hisc4y.pdf>, @content_type="application/pdf", @original_filename="sample_cv.pdf", @headers="Content-Disposition: form-data; name=\"cv\"; filename=\"sample_cv.pdf\"\r\nContent-Type: application/pdf\r\n">, "project_report"=>#<ActionDispatch::Http::UploadedFile:0x0000000105b82b70 @tempfile=#<Tempfile:/var/folders/03/74z6gldj3tl9q5x76cxxngl40000gn/T/RackMultipart20251010-52704-lpwbr0.pdf>, @content_type="application/pdf", @original_filename="sample_project_report.pdf", @headers="Content-Disposition: form-data; name=\"project_report\"; filename=\"sample_project_report.pdf\"\r\nContent-Type: application/pdf\r\n">, "job_title"=>"Senior Software Engineer"}
+Can't verify CSRF token authenticity.
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Exists? (2.5ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 LIMIT $2[0m  [["checksum", "c89b36e7b9b07a566cb1ab99f179fdf821f115a5e045ee64042b63e8449094d6"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Create (0.7ms)[0m  [1m[32mINSERT INTO "documents" ("filename", "content_type", "file_size", "file_path", "document_type", "extracted_text", "metadata", "checksum", "processed", "processed_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["filename", "sample_cv.pdf"], ["content_type", "application/pdf"], ["file_size", 25823], ["file_path", "/Users/mymac/Downloads/rails-api/storage/uploads/20251010_073325_666d91ca288b024c_sample_cv.pdf"], ["document_type", "cv"], ["extracted_text", nil], ["metadata", "{}"], ["checksum", "c89b36e7b9b07a566cb1ab99f179fdf821f115a5e045ee64042b63e8449094d6"], ["processed", false], ["processed_at", nil], ["created_at", "2025-10-10 07:33:25.613561"], ["updated_at", "2025-10-10 07:33:25.613561"]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 LIMIT $2[0m  [["checksum", "106532546d4ce99e4ced2de11720577527677352a29ed7e6359f1a117146b63b"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mDocument Create (0.3ms)[0m  [1m[32mINSERT INTO "documents" ("filename", "content_type", "file_size", "file_path", "document_type", "extracted_text", "metadata", "checksum", "processed", "processed_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["filename", "sample_project_report.pdf"], ["content_type", "application/pdf"], ["file_size", 24389], ["file_path", "/Users/mymac/Downloads/rails-api/storage/uploads/20251010_073325_1e99c0b1df84d683_sample_project_report.pdf"], ["document_type", "project_report"], ["extracted_text", nil], ["metadata", "{}"], ["checksum", "106532546d4ce99e4ced2de11720577527677352a29ed7e6359f1a117146b63b"], ["processed", false], ["processed_at", nil], ["created_at", "2025-10-10 07:33:25.668571"], ["updated_at", "2025-10-10 07:33:25.668571"]]
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/documents_controller.rb:58:in `save_document'
+DEPRECATION WARNING: `wait: :exponentially_longer` will actually wait polynomially longer and is therefore deprecated. Prefer `wait: :polynomially_longer` to avoid confusion and keep the same behavior. (called from <class:ExtractTextJob> at /Users/mymac/Downloads/rails-api/app/jobs/extract_text_job.rb:4)
+[ActiveJob] Enqueued ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) to Sidekiq(default) with arguments: 3
+[ActiveJob] ↳ app/controllers/api/v1/documents_controller.rb:22:in `upload'
+[ActiveJob] Enqueued ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) to Sidekiq(default) with arguments: 4
+[ActiveJob] ↳ app/controllers/api/v1/documents_controller.rb:23:in `upload'
+Completed 201 Created in 152ms (Views: 0.5ms | ActiveRecord: 20.2ms | Allocations: 37809)
+
+
+Started POST "/api/v1/evaluations" for ::1 at 2025-10-10 14:33:43 +0700
+  
+ActionController::RoutingError (No route matches [POST] "/api/v1/evaluations"):
+  
+Started POST "/api/v1/evaluations" for ::1 at 2025-10-10 14:33:53 +0700
+  
+ActionController::RoutingError (No route matches [POST] "/api/v1/evaluations"):
+  
+Started POST "/api/v1/evaluate" for ::1 at 2025-10-10 14:34:11 +0700
+Processing by Api::V1::EvaluationsController#create as */*
+  Parameters: {"job_title"=>"Senior Software Engineer", "cv_document_id"=>3, "project_document_id"=>4, "evaluation"=>{"job_title"=>"Senior Software Engineer", "cv_document_id"=>3, "project_document_id"=>4}}
+Can't verify CSRF token authenticity.
+  [1m[36mDocument Load (0.2ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:10:in `create'
+  [1m[36mDocument Load (0.2ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:11:in `create'
+Completed 422 Unprocessable Content in 4ms (Views: 0.2ms | ActiveRecord: 0.5ms | Allocations: 1926)
+
+
+Sidekiq server started
+DEPRECATION WARNING: `wait: :exponentially_longer` will actually wait polynomially longer and is therefore deprecated. Prefer `wait: :polynomially_longer` to avoid confusion and keep the same behavior. (called from <class:ExtractTextJob> at /Users/mymac/Downloads/rails-api/app/jobs/extract_text_job.rb:4)
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Performing ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) from Sidekiq(default) enqueued at 2025-10-10T07:33:25.690126000Z with arguments: 3
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Performing ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) from Sidekiq(default) enqueued at 2025-10-10T07:33:25.693928000Z with arguments: 4
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Load (0.5ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/jobs/extract_text_job.rb:7:in `perform'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Load (0.5ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/jobs/extract_text_job.rb:7:in `perform'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Starting text extraction for document 4: sample_project_report.pdf
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Starting text extraction for document 3: sample_cv.pdf
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mTRANSACTION (47.2ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 AND "documents"."id" != $2 LIMIT $3[0m  [["checksum", "c89b36e7b9b07a566cb1ab99f179fdf821f115a5e045ee64042b63e8449094d6"], ["id", 3], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 AND "documents"."id" != $2 LIMIT $3[0m  [["checksum", "106532546d4ce99e4ced2de11720577527677352a29ed7e6359f1a117146b63b"], ["id", 4], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Update (2.2ms)[0m  [1m[33mUPDATE "documents" SET "extracted_text" = $1, "processed" = $2, "processed_at" = $3, "updated_at" = $4 WHERE "documents"."id" = $5[0m  [["extracted_text", "JOHN SMITH\nSenior Software Engineer | AI/ML Specialist\nEmail: john.smith@email.com | Phone: (555) 123-4567\n\nPROFESSIONAL SUMMARY\nExperienced software engineer with 5+ years of expertise in backend development,\n\ncloud infrastructure, and AI/ML implementations. Proven track record of scaling\napplications to handle millions of users and leading cross-functional teams.\n\nTECHNICAL SKILLS\n- Programming: Python, Node.js, JavaScript, React\n- Databases: PostgreSQL, MongoDB, Redis\n- Cloud: AWS (EC2, S3, Lambda, RDS), Docker, Kubernetes\n- APIs: REST, GraphQL\n- AI/ML: TensorFlow, LLM Integration, RAG Systems\n\nPROFESSIONAL EXPERIENCE\n\nSenior Software Engineer | TechCorp Inc. | 2021 - Present\n• Led development of AI-powered recommendation system serving 2M+ daily users,\n  improving engagement by 35%\n• Architected microservices infrastructure on AWS, reducing system latency by 40\n%\n• Built RAG-based chatbot using OpenAI GPT-4 and vector databases, achieving 92%\n\n  user satisfaction\n• Mentored 3 junior developers and established code review processes that reduce\nd\n  bugs by 50%\n\nSoftware Engineer | StartupXYZ | 2019 - 2021\n• Developed scalable backend APIs using Node.js and PostgreSQL, supporting 500K+\n users\n• Implemented real-time data processing pipeline using Apache Kafka and Redis\n• Built machine learning models for fraud detection, reducing false positives by\n 60%\n• Collaborated with product team to design new features, increasing user retenti\non by 25%\n\nJunior Software Developer | WebSolutions Ltd. | 2018 - 2019\n• Developed responsive web applications using React and Node.js\n• Participated in agile development processes and daily standups\n• Contributed to open-source projects and learned modern development practices\n\nKEY ACHIEVEMENTS\n• Performance: Reduced database query time by 70% through optimization strategie\ns\n• Scaling: Successfully scaled application from 10K to 2M+ daily active users\n• Cost Optimization: Reduced AWS infrastructure costs by $15K monthly while impr\noving performance\n• Leadership: Led cross-functional team of 8 people to deliver major feature 2 w\neeks ahead of schedule\n• Innovation: Pioneered LLM-based features that became core product differentiat\nor\n\nEDUCATION\nBachelor of Science in Computer Science\nUniversity of Technology | 2014 - 2018\nRelevant Coursework: Data Structures, Algorithms, Database Systems, Machine Lear\nning\nCERTIFICATIONS\n• AWS Certified Solutions Architect - Associate (2022)\n• Google Cloud Professional Data Engineer (2021)\n• MongoDB Certified Developer (2020)\n\nPERSONAL QUALITIES\n• Communication: Excellent written and verbal communication skills\n• Learning Mindset: Continuously learning new technologies, completed 15+ course\ns in past year\n• Teamwork: Strong collaborative skills in remote and in-person environments\n• Problem Solving: Analytical approach to complex problems with creative solutio\nns\n• Leadership: Natural leader who enjoys mentoring others and driving technical i\nnitiatives"], ["processed", true], ["processed_at", "2025-10-10 07:34:27.712570"], ["updated_at", "2025-10-10 07:34:27.768133"], ["id", 3]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Update (3.2ms)[0m  [1m[33mUPDATE "documents" SET "extracted_text" = $1, "processed" = $2, "processed_at" = $3, "updated_at" = $4 WHERE "documents"."id" = $5[0m  [["extracted_text", "PROJECT REPORT: AI-POWERED RECOMMENDATION SYSTEM\n\nProject Overview:\nBuilt a scalable AI-powered recommendation system for TechCorp Inc. that serves\nover 2 million daily active users.\n\nTechnical Implementation:\n- Backend: Python with FastAPI framework\n- Database: PostgreSQL for user data, Redis for caching\n- AI/ML: TensorFlow for deep learning models, OpenAI GPT-4 for natural language\nprocessing\n- Infrastructure: AWS EC2, S3, Lambda, and RDS\n- Vector Database: Pinecone for similarity search\n- Message Queue: Apache Kafka for real-time data processing\n\nArchitecture:\n1. Data Collection Layer: Collects user behavior data and preferences\n2. Feature Engineering: Processes raw data into ML-ready features\n3. Model Training: Uses collaborative filtering and deep learning\n4. Inference Engine: Real-time recommendation generation\n5. API Layer: RESTful APIs for frontend integration\n6. Caching Layer: Redis for fast response times\n\nKey Features Implemented:\n- Real-time personalized recommendations\n- Content-based filtering using NLP\n- Collaborative filtering for user similarity\n- A/B testing framework for model evaluation\n- RAG (Retrieval-Augmented Generation) for explanations\n- Multi-armed bandit for exploration vs exploitation\n\nPerformance Metrics:\n- Latency: Average response time of 50ms\n- Throughput: Handles 10,000 requests per second\n- Accuracy: 35% improvement in user engagement\n- Scalability: Successfully scaled from 10K to 2M+ users\n- Cost Efficiency: Reduced infrastructure costs by 25%\n\nCode Quality:\n- 95% test coverage with unit and integration tests\n- Comprehensive documentation and API specs\n- CI/CD pipeline with automated testing and deployment\n- Code review process with senior engineers\n- Monitoring and alerting with Prometheus and Grafana\n\nChallenges Overcome:\n1. Cold Start Problem: Implemented hybrid approach combining content and collabo\nrative filtering\n2. Scalability: Designed microservices architecture with horizontal scaling\n3. Real-time Processing: Used Apache Kafka for streaming data processing\n4. Model Drift: Implemented automated retraining pipeline\n5. Data Privacy: Ensured GDPR compliance with data anonymization\n\nResults and Impact:\n- 35% increase in user engagement metrics\n- 40% reduction in system latency\n- 92% user satisfaction score\n- Successfully handling 2M+ daily active users\n- Became core product differentiator for the company\n\nFuture Enhancements:\n- Integration with more data sources\n- Advanced deep learning models\n- Real-time model updates\n- Enhanced explainability features\n- Mobile app optimization\n\nTechnologies Used:\nPython, FastAPI, TensorFlow, PostgreSQL, Redis, AWS, Docker, Kubernetes,\nApache Kafka, Pinecone, OpenAI GPT-4, Prometheus, Grafana, GitHub Actions\n\nProject Duration: 8 months (2023-2024)\nTeam Size: 5 engineers (led the technical implementation)"], ["processed", true], ["processed_at", "2025-10-10 07:34:27.760204"], ["updated_at", "2025-10-10 07:34:27.770108"], ["id", 4]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mTRANSACTION (2.4ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mTRANSACTION (1.5ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] DEPRECATION WARNING: `wait: :exponentially_longer` will actually wait polynomially longer and is therefore deprecated. Prefer `wait: :polynomially_longer` to avoid confusion and keep the same behavior. (called from <class:GenerateEmbeddingsJob> at /Users/mymac/Downloads/rails-api/app/jobs/generate_embeddings_job.rb:4)
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Failed to extract text from sample_cv.pdf: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Text extraction failed for document 3: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Failed to extract text from sample_project_report.pdf: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Text extraction failed for document 4: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Enqueued ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) to Sidekiq(default) at 2025-10-10 07:34:30 UTC with arguments: 3
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Enqueued ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) to Sidekiq(default) at 2025-10-10 07:34:30 UTC with arguments: 4
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Retrying ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) after 1 attempts in 3 seconds, due to a NoMethodError (undefined method `perform_async' for GenerateEmbeddingsJob:Class).
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Retrying ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) after 1 attempts in 3 seconds, due to a NoMethodError (undefined method `perform_async' for GenerateEmbeddingsJob:Class).
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Performed ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) from Sidekiq(default) in 786.49ms
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Performed ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) from Sidekiq(default) in 786.82ms
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Performing ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) from Sidekiq(default) enqueued at 2025-10-10T07:34:27.781321000Z with arguments: 4
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Performing ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) from Sidekiq(default) enqueued at 2025-10-10T07:34:27.779948000Z with arguments: 3
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Load (0.7ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/jobs/extract_text_job.rb:7:in `perform'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Starting text extraction for document 4: sample_project_report.pdf
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Load (1.2ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/jobs/extract_text_job.rb:7:in `perform'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Starting text extraction for document 3: sample_cv.pdf
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mTRANSACTION (38.8ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Exists? (40.6ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 AND "documents"."id" != $2 LIMIT $3[0m  [["checksum", "106532546d4ce99e4ced2de11720577527677352a29ed7e6359f1a117146b63b"], ["id", 4], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Exists? (2.0ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 AND "documents"."id" != $2 LIMIT $3[0m  [["checksum", "c89b36e7b9b07a566cb1ab99f179fdf821f115a5e045ee64042b63e8449094d6"], ["id", 3], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Update (0.5ms)[0m  [1m[33mUPDATE "documents" SET "processed_at" = $1, "updated_at" = $2 WHERE "documents"."id" = $3[0m  [["processed_at", "2025-10-10 07:34:40.848062"], ["updated_at", "2025-10-10 07:34:40.890483"], ["id", 4]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Update (0.5ms)[0m  [1m[33mUPDATE "documents" SET "processed_at" = $1, "updated_at" = $2 WHERE "documents"."id" = $3[0m  [["processed_at", "2025-10-10 07:34:40.886632"], ["updated_at", "2025-10-10 07:34:40.891655"], ["id", 3]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Failed to extract text from sample_project_report.pdf: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Text extraction failed for document 4: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Failed to extract text from sample_cv.pdf: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Text extraction failed for document 3: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Enqueued ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) to Sidekiq(default) at 2025-10-10 07:35:00 UTC with arguments: 4
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Retrying ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) after 2 attempts in 19 seconds, due to a NoMethodError (undefined method `perform_async' for GenerateEmbeddingsJob:Class).
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Enqueued ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) to Sidekiq(default) at 2025-10-10 07:34:59 UTC with arguments: 3
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Performed ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) from Sidekiq(default) in 314.34ms
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Retrying ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) after 2 attempts in 18 seconds, due to a NoMethodError (undefined method `perform_async' for GenerateEmbeddingsJob:Class).
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Performed ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) from Sidekiq(default) in 316.37ms
+Started POST "/api/v1/evaluate" for ::1 at 2025-10-10 14:34:45 +0700
+Processing by Api::V1::EvaluationsController#create as */*
+  Parameters: {"job_title"=>"Senior Software Engineer", "cv_document_id"=>3, "project_document_id"=>4, "evaluation"=>{"job_title"=>"Senior Software Engineer", "cv_document_id"=>3, "project_document_id"=>4}}
+Can't verify CSRF token authenticity.
+  [1m[36mDocument Load (0.3ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:10:in `create'
+  [1m[36mDocument Load (0.3ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:11:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/evaluations_controller.rb:28:in `create'
+  [1m[36mEvaluationJob Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "evaluation_jobs" WHERE "evaluation_jobs"."job_id" = $1 LIMIT $2[0m  [["job_id", "eca471ee-1841-4f1c-9aae-81645f1a8bc9"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:28:in `create'
+  [1m[36mEvaluationJob Create (2.9ms)[0m  [1m[32mINSERT INTO "evaluation_jobs" ("job_id", "job_title", "cv_document_id", "project_document_id", "status", "cv_match_rate", "cv_feedback", "project_score", "project_feedback", "overall_summary", "processing_steps", "error_message", "retry_count", "started_at", "completed_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING "id"[0m  [["job_id", "eca471ee-1841-4f1c-9aae-81645f1a8bc9"], ["job_title", "Senior Software Engineer"], ["cv_document_id", 3], ["project_document_id", 4], ["status", "queued"], ["cv_match_rate", nil], ["cv_feedback", nil], ["project_score", nil], ["project_feedback", nil], ["overall_summary", nil], ["processing_steps", "{}"], ["error_message", nil], ["retry_count", 0], ["started_at", nil], ["completed_at", nil], ["created_at", "2025-10-10 07:34:46.060193"], ["updated_at", "2025-10-10 07:34:46.060193"]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:28:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/evaluations_controller.rb:28:in `create'
+DEPRECATION WARNING: `wait: :exponentially_longer` will actually wait polynomially longer and is therefore deprecated. Prefer `wait: :polynomially_longer` to avoid confusion and keep the same behavior. (called from <class:EvaluationWorkerJob> at /Users/mymac/Downloads/rails-api/app/jobs/evaluation_worker_job.rb:4)
+[ActiveJob] Enqueued EvaluationWorkerJob (Job ID: 865f8f5f-bc20-4577-bd26-ec60a199f141) to Sidekiq(evaluation) with arguments: 1
+[ActiveJob] ↳ app/controllers/api/v1/evaluations_controller.rb:35:in `create'
+Completed 201 Created in 61ms (Views: 0.2ms | ActiveRecord: 8.8ms | Allocations: 22294)
+
+
+DEPRECATION WARNING: `wait: :exponentially_longer` will actually wait polynomially longer and is therefore deprecated. Prefer `wait: :polynomially_longer` to avoid confusion and keep the same behavior. (called from <class:EvaluationWorkerJob> at /Users/mymac/Downloads/rails-api/app/jobs/evaluation_worker_job.rb:4)
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141] Performing EvaluationWorkerJob (Job ID: 865f8f5f-bc20-4577-bd26-ec60a199f141) from Sidekiq(evaluation) enqueued at 2025-10-10T07:34:46.068831000Z with arguments: 1
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mEvaluationJob Load (0.8ms)[0m  [1m[34mSELECT "evaluation_jobs".* FROM "evaluation_jobs" WHERE "evaluation_jobs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/jobs/evaluation_worker_job.rb:7:in `perform'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141] Starting evaluation for job eca471ee-1841-4f1c-9aae-81645f1a8bc9
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/models/evaluation_job.rb:37:in `start_processing!'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mEvaluationJob Update (0.6ms)[0m  [1m[33mUPDATE "evaluation_jobs" SET "status" = $1, "processing_steps" = $2, "started_at" = $3, "updated_at" = $4 WHERE "evaluation_jobs"."id" = $5[0m  [["status", "processing"], ["processing_steps", "{\"started\":\"2025-10-10T07:34:46Z\"}"], ["started_at", "2025-10-10 07:34:46.115084"], ["updated_at", "2025-10-10 07:34:46.119302"], ["id", 1]]
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/models/evaluation_job.rb:37:in `start_processing!'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/models/evaluation_job.rb:37:in `start_processing!'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mDocument Load (0.4ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/jobs/evaluation_worker_job.rb:44:in `evaluate_cv'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mVectorEmbedding Load (1.0ms)[0m  [1m[34mSELECT "vector_embeddings".* FROM "vector_embeddings" INNER JOIN "documents" ON "documents"."id" = "vector_embeddings"."document_id" WHERE "documents"."document_type" IN ($1, $2)[0m  [["document_type", "job_description"], ["document_type", "scoring_rubric"]]
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/models/vector_embedding.rb:17:in `map'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mDocument Load (0.4ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/jobs/evaluation_worker_job.rb:62:in `evaluate_project_report'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mVectorEmbedding Load (0.4ms)[0m  [1m[34mSELECT "vector_embeddings".* FROM "vector_embeddings" INNER JOIN "documents" ON "documents"."id" = "vector_embeddings"."document_id" WHERE "documents"."document_type" IN ($1, $2)[0m  [["document_type", "case_study"], ["document_type", "scoring_rubric"]]
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/models/vector_embedding.rb:17:in `map'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/models/evaluation_job.rb:45:in `complete!'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mEvaluationJob Update (2.2ms)[0m  [1m[33mUPDATE "evaluation_jobs" SET "status" = $1, "processing_steps" = $2, "cv_match_rate" = $3, "cv_feedback" = $4, "project_score" = $5, "project_feedback" = $6, "overall_summary" = $7, "completed_at" = $8, "updated_at" = $9 WHERE "evaluation_jobs"."id" = $10[0m  [["status", "completed"], ["processing_steps", "{\"started\":\"2025-10-10T07:34:46Z\",\"completed\":\"2025-10-10T07:34:46Z\"}"], ["cv_match_rate", "0.5"], ["cv_feedback", "Strong candidate with solid technical foundation. Demonstrates good problem-solving skills and code quality. Recommended for next interview round with focus on AI/ML knowledge assessment."], ["project_score", "3.0"], ["project_feedback", "Strong candidate with solid technical foundation. Demonstrates good problem-solving skills and code quality. Recommended for next interview round with focus on AI/ML knowledge assessment."], ["overall_summary", "Strong candidate with solid technical foundation. Demonstrates good problem-solving skills and code quality. Recommended for next interview round with focus on AI/ML knowledge assessment."], ["completed_at", "2025-10-10 07:34:46.157599"], ["updated_at", "2025-10-10 07:34:46.159214"], ["id", 1]]
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/models/evaluation_job.rb:45:in `complete!'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141]   ↳ app/models/evaluation_job.rb:45:in `complete!'
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141] Evaluation completed for job eca471ee-1841-4f1c-9aae-81645f1a8bc9
+[ActiveJob] [EvaluationWorkerJob] [865f8f5f-bc20-4577-bd26-ec60a199f141] Performed EvaluationWorkerJob (Job ID: 865f8f5f-bc20-4577-bd26-ec60a199f141) from Sidekiq(evaluation) in 73.96ms
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Performing ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) from Sidekiq(default) enqueued at 2025-10-10T07:34:40.895561000Z with arguments: 3
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Performing ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) from Sidekiq(default) enqueued at 2025-10-10T07:34:40.894703000Z with arguments: 4
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Load (0.6ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/jobs/extract_text_job.rb:7:in `perform'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Starting text extraction for document 3: sample_cv.pdf
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Load (0.3ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/jobs/extract_text_job.rb:7:in `perform'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Starting text extraction for document 4: sample_project_report.pdf
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Exists? (60.3ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 AND "documents"."id" != $2 LIMIT $3[0m  [["checksum", "c89b36e7b9b07a566cb1ab99f179fdf821f115a5e045ee64042b63e8449094d6"], ["id", 3], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mTRANSACTION (1.8ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mDocument Update (1.0ms)[0m  [1m[33mUPDATE "documents" SET "processed_at" = $1, "updated_at" = $2 WHERE "documents"."id" = $3[0m  [["processed_at", "2025-10-10 07:35:01.301922"], ["updated_at", "2025-10-10 07:35:01.364248"], ["id", 3]]
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Exists? (3.5ms)[0m  [1m[34mSELECT 1 AS one FROM "documents" WHERE "documents"."checksum" = $1 AND "documents"."id" != $2 LIMIT $3[0m  [["checksum", "106532546d4ce99e4ced2de11720577527677352a29ed7e6359f1a117146b63b"], ["id", 4], ["LIMIT", 1]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Failed to extract text from sample_cv.pdf: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mDocument Update (0.5ms)[0m  [1m[33mUPDATE "documents" SET "processed_at" = $1, "updated_at" = $2 WHERE "documents"."id" = $3[0m  [["processed_at", "2025-10-10 07:35:01.362231"], ["updated_at", "2025-10-10 07:35:01.367252"], ["id", 4]]
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Text extraction failed for document 3: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Stopped retrying ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) due to a NoMethodError (undefined method `perform_async' for GenerateEmbeddingsJob:Class), which reoccurred on 3 attempts.
+[ActiveJob] [ExtractTextJob] [94420621-a3b9-4b15-bc35-14db08716c25] Error performing ExtractTextJob (Job ID: 94420621-a3b9-4b15-bc35-14db08716c25) from Sidekiq(default) in 325.35ms: NoMethodError (undefined method `perform_async' for GenerateEmbeddingsJob:Class):
+/Users/mymac/Downloads/rails-api/app/models/document.rb:39:in `extract_text!'
+/Users/mymac/Downloads/rails-api/app/jobs/extract_text_job.rb:11:in `perform'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:68:in `block in _perform_job'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/i18n-1.14.7/lib/i18n.rb:353:in `with_locale'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/translation.rb:9:in `block (2 levels) in <module:Translation>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `instance_exec'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/core_ext/time/zones.rb:65:in `use_zone'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/timezones.rb:9:in `block (2 levels) in <module:Timezones>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `instance_exec'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:141:in `run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:67:in `_perform_job'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:32:in `_perform_job'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:51:in `perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:26:in `block in perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.5.1/lib/active_record/railties/job_runtime.rb:13:in `block in instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:40:in `block in instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/notifications.rb:206:in `block in instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/notifications/instrumenter.rb:58:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/notifications.rb:206:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:39:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.5.1/lib/active_record/railties/job_runtime.rb:11:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:26:in `perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/logging.rb:18:in `block in perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/tagged_logging.rb:139:in `block in tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/tagged_logging.rb:39:in `tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/tagged_logging.rb:139:in `tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/broadcast_logger.rb:241:in `method_missing'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/logging.rb:25:in `tag_logger'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/logging.rb:18:in `perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:29:in `block in execute'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/railtie.rb:67:in `block (4 levels) in <class:Railtie>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/reloader.rb:77:in `block in wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/execution_wrapper.rb:88:in `wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/reloader.rb:74:in `wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/railtie.rb:66:in `block (3 levels) in <class:Railtie>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `instance_exec'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:141:in `run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:27:in `execute'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/rails.rb:13:in `perform'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:220:in `execute_job'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:185:in `block (4 levels) in process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:180:in `traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:183:in `block in traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job/interrupt_handler.rb:9:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:182:in `traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:183:in `block in traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/metrics/tracking.rb:26:in `track'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/metrics/tracking.rb:134:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:182:in `traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:173:in `invoke'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:184:in `block (3 levels) in process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:145:in `block (6 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job_retry.rb:118:in `local'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:144:in `block (5 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/rails.rb:27:in `block in call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/reloader.rb:77:in `block in wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/execution_wrapper.rb:92:in `wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/reloader.rb:74:in `wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/rails.rb:26:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:139:in `block (4 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:281:in `stats'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:134:in `block (3 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job_logger.rb:15:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:133:in `block (2 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job_retry.rb:85:in `global'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:132:in `block in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job_logger.rb:40:in `prepare'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:131:in `dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:183:in `block (2 levels) in process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:182:in `handle_interrupt'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:182:in `block in process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:181:in `handle_interrupt'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:181:in `process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:86:in `process_one'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:76:in `run'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/component.rb:10:in `watchdog'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/component.rb:19:in `block in safe_thread'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c]   ↳ app/models/document.rb:32:in `extract_text!'
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Failed to extract text from sample_project_report.pdf: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Text extraction failed for document 4: undefined method `perform_async' for GenerateEmbeddingsJob:Class
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Stopped retrying ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) due to a NoMethodError (undefined method `perform_async' for GenerateEmbeddingsJob:Class), which reoccurred on 3 attempts.
+[ActiveJob] [ExtractTextJob] [cc3cadd4-d36e-4b6b-8e45-9208a100c72c] Error performing ExtractTextJob (Job ID: cc3cadd4-d36e-4b6b-8e45-9208a100c72c) from Sidekiq(default) in 328.68ms: NoMethodError (undefined method `perform_async' for GenerateEmbeddingsJob:Class):
+/Users/mymac/Downloads/rails-api/app/models/document.rb:39:in `extract_text!'
+/Users/mymac/Downloads/rails-api/app/jobs/extract_text_job.rb:11:in `perform'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:68:in `block in _perform_job'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/i18n-1.14.7/lib/i18n.rb:353:in `with_locale'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/translation.rb:9:in `block (2 levels) in <module:Translation>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `instance_exec'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/core_ext/time/zones.rb:65:in `use_zone'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/timezones.rb:9:in `block (2 levels) in <module:Timezones>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `instance_exec'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:141:in `run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:67:in `_perform_job'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:32:in `_perform_job'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:51:in `perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:26:in `block in perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.5.1/lib/active_record/railties/job_runtime.rb:13:in `block in instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:40:in `block in instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/notifications.rb:206:in `block in instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/notifications/instrumenter.rb:58:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/notifications.rb:206:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:39:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.5.1/lib/active_record/railties/job_runtime.rb:11:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/instrumentation.rb:26:in `perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/logging.rb:18:in `block in perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/tagged_logging.rb:139:in `block in tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/tagged_logging.rb:39:in `tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/tagged_logging.rb:139:in `tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/broadcast_logger.rb:241:in `method_missing'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/logging.rb:25:in `tag_logger'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/logging.rb:18:in `perform_now'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:29:in `block in execute'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/railtie.rb:67:in `block (4 levels) in <class:Railtie>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/reloader.rb:77:in `block in wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/execution_wrapper.rb:88:in `wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/reloader.rb:74:in `wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/railtie.rb:66:in `block (3 levels) in <class:Railtie>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `instance_exec'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:130:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/callbacks.rb:141:in `run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activejob-7.1.5.1/lib/active_job/execution.rb:27:in `execute'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/rails.rb:13:in `perform'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:220:in `execute_job'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:185:in `block (4 levels) in process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:180:in `traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:183:in `block in traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job/interrupt_handler.rb:9:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:182:in `traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:183:in `block in traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/metrics/tracking.rb:26:in `track'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/metrics/tracking.rb:134:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:182:in `traverse'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/middleware/chain.rb:173:in `invoke'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:184:in `block (3 levels) in process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:145:in `block (6 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job_retry.rb:118:in `local'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:144:in `block (5 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/rails.rb:27:in `block in call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/reloader.rb:77:in `block in wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/execution_wrapper.rb:92:in `wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.5.1/lib/active_support/reloader.rb:74:in `wrap'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/rails.rb:26:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:139:in `block (4 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:281:in `stats'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:134:in `block (3 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job_logger.rb:15:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:133:in `block (2 levels) in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job_retry.rb:85:in `global'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:132:in `block in dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/job_logger.rb:40:in `prepare'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:131:in `dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:183:in `block (2 levels) in process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:182:in `handle_interrupt'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:182:in `block in process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:181:in `handle_interrupt'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:181:in `process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:86:in `process_one'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/processor.rb:76:in `run'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/component.rb:10:in `watchdog'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sidekiq-7.3.9/lib/sidekiq/component.rb:19:in `block in safe_thread'
+Started GET "/api/v1/result/eca471ee-1841-4f1c-9aae-81645f1a8bc9" for ::1 at 2025-10-10 14:35:01 +0700
+Processing by Api::V1::EvaluationsController#show as */*
+  Parameters: {"id"=>"eca471ee-1841-4f1c-9aae-81645f1a8bc9"}
+  [1m[36mEvaluationJob Load (0.2ms)[0m  [1m[34mSELECT "evaluation_jobs".* FROM "evaluation_jobs" WHERE "evaluation_jobs"."job_id" = $1 LIMIT $2[0m  [["job_id", "eca471ee-1841-4f1c-9aae-81645f1a8bc9"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/evaluations_controller.rb:49:in `show'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.2ms | Allocations: 826)
+
+
+Started GET "/?ide_webview_request_time=1760080575737" for ::1 at 2025-10-10 15:08:03 +0700
+Started GET "/?ide_webview_request_time=1760080575737" for ::1 at 2025-10-10 15:08:03 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (84.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"ide_webview_request_time"=>"1760080575737"}
+  Parameters: {"ide_webview_request_time"=>"1760080575737"}
+  Rendering vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendering vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.4ms | Allocations: 395)
+  Rendered vendor/bundle/ruby/3.2.0/gems/railties-7.1.5.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.3ms | Allocations: 397)
+Completed 200 OK in 613ms (Views: 8.8ms | ActiveRecord: 0.0ms | Allocations: 285703)
+
+
+Completed 200 OK in 611ms (Views: 5.6ms | ActiveRecord: 0.0ms | Allocations: 285519)
+
+
+Started GET "/@vite/client" for ::1 at 2025-10-10 15:08:04 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/@vite/client"):
+  
+Started GET "/api-docs?ide_webview_request_time=1760083726262" for ::1 at 2025-10-10 15:08:46 +0700
+Started GET "/api-docs/index.html" for ::1 at 2025-10-10 15:08:46 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-10-10 15:08:46 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-10-10 15:08:46 +0700
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-10-10 15:08:46 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-10 15:08:47 +0700
+Started GET "/@vite/client" for ::1 at 2025-10-10 15:08:47 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/@vite/client"):
+  
+Started GET "/api/v1/articles" for ::1 at 2025-10-10 15:09:24 +0700
+Processing by Api::V1::ArticlesController#index as JSON
+  [1m[36mArticle Load (3.4ms)[0m  [1m[34mSELECT "articles".* FROM "articles"[0m
+  ↳ app/controllers/api/v1/articles_controller.rb:9:in `index'
+Completed 200 OK in 81ms (Views: 28.6ms | ActiveRecord: 28.4ms | Allocations: 16122)
+
+
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-10 15:09:29 +0700

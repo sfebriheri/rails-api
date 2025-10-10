@@ -38,5 +38,19 @@ module ModernPlatform
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Configure Sidekiq as the Active Job adapter
+    config.active_job.queue_adapter = :sidekiq
+
+    # Configure file upload limits
+    config.file_upload_max_size = ENV.fetch('MAX_FILE_SIZE', 10.megabytes).to_i
+
+    # Configure evaluation settings
+    config.evaluation_timeout = ENV.fetch('EVALUATION_TIMEOUT', 300).to_i
+    config.max_retry_attempts = ENV.fetch('MAX_RETRY_ATTEMPTS', 3).to_i
+
+    # Configure text chunking
+    config.chunk_size = ENV.fetch('CHUNK_SIZE', 1000).to_i
+    config.chunk_overlap = ENV.fetch('CHUNK_OVERLAP', 200).to_i
   end
 end
