@@ -1,0 +1,14 @@
+Senior Software Engineer Job Description
+
+Position: Senior Software Engineer
+Department: Engineering
+Location: Remote/Hybrid
+
+We are seeking a highly skilled Senior Software Engineer with 5+ years of experience in Ruby on Rails, JavaScript, and cloud technologies.
+
+Key Requirements:
+- Ruby on Rails expertise
+- JavaScript proficiency  
+- Cloud platform experience
+- API design skills
+- Agile development experience

@@ -30,7 +30,29 @@ gem "tailwindcss-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem "redis", ">= 4.0.1"
+
+# Background job processing
+gem "sidekiq", "~> 7.0"
+
+# HTTP client for API calls
+gem "faraday", "~> 2.0"
+
+# PDF processing
+gem "pdf-reader", "~> 2.0"
+
+# Vector database client (ChromaDB)
+gem "chroma-db", "~> 0.6"
+
+# Environment variables
+gem "dotenv-rails", "~> 2.8"
+
+# JSON Web Tokens for API authentication
+gem "jwt", "~> 2.7"
+
+# Swagger API documentation
+gem "rswag-api", "~> 2.13"
+gem "rswag-ui", "~> 2.13"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -58,6 +80,7 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 6.0'
   gem 'simplecov', '~> 0.22', require: false
   gem 'rspec_junit_formatter', '~> 0.6'
+  gem 'rswag-specs', '~> 2.13'
 end
 
 group :development do
