@@ -7,12 +7,14 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Stub Vite dev client to avoid routing errors in environments without Vite
+  get "/@vite/client", to: proc { [200, { "Content-Type" => "application/javascript" }, ["// Vite client disabled in this environment\n"]] }
+
   # API routes
   namespace :api do
     namespace :v1 do
-      # Legacy articles endpoint (keeping for backward compatibility)
-      resources :articles
-      
+      # Articles endpoints removed as non-mandatory
+
       # Job Application Screening Service endpoints
       post 'upload', to: 'documents#upload'
       post 'evaluate', to: 'evaluations#create'

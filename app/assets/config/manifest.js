@@ -1,5 +1,2 @@
-//= link_tree ../images
-//= link_directory ../stylesheets .css
-//= link_tree ../../javascript .js
-//= link_tree ../../../vendor/javascript .js
-//= link_tree ../builds
+// Minimal manifest to satisfy Sprockets in API-focused setup
+// No asset directories are linked as the app serves API only.
