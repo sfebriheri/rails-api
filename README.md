@@ -44,22 +44,15 @@ ruby -v
 #### Step 2: Install Dependencies
 
 ```bash
-# Install the correct bundler version
-gem install bundler -v 2.6.2
-
-# Install project dependencies
-bundle install
+# Install project dependencies via Makefile
+make install
 ```
 
 #### Step 3: Database Setup
 
 ```bash
 # Create and migrate database
-rails db:create
-rails db:migrate
-
-# Optional: Seed with sample data
-rails db:seed
+make db-setup
 ```
 
 #### Step 4: Start Services
@@ -69,10 +62,10 @@ rails db:seed
 redis-server
 
 # Start Sidekiq (in a separate terminal)
-bundle exec sidekiq
+make rspec SPEC=spec # Example parallel terminal for tests
 
 # Start the Rails server
-rails server
+make server
 ```
 
 ### Option 2: Docker Setup
@@ -93,16 +86,16 @@ docker-compose up
 
 ```bash
 # Update vulnerability database and check for issues
-bundle exec bundler-audit check --update
+make audit # If you add a target
 
 # Run security scanner
-bundle exec brakeman -q -w2
+make brakeman # If you add a target
 
 # Run code style linter
-bundle exec rubocop
+make rubocop # If you add a target
 
 # Run all tests
-bundle exec rspec
+make rspec
 ```
 
 ### Quick Commands Reference
@@ -110,22 +103,19 @@ bundle exec rspec
 ```bash
 # After installing Ruby 3.2.2
 rbenv local 3.2.2
-gem install bundler -v 2.6.2
-bundle install
+
+# Install dependencies
+make install
 
 # Database operations
-rails db:create db:migrate
+make db-setup
 
 # Start all services
 redis-server                    # Terminal 1
-bundle exec sidekiq            # Terminal 2
-rails server                   # Terminal 3
+make server                     # Terminal 2
 
 # Run quality checks
-bundle exec bundler-audit check --update
-bundle exec brakeman -q -w2
-bundle exec rubocop
-bundle exec rspec
+make rspec
 ```
 
 ## 📡 API Endpoints
@@ -177,13 +167,13 @@ The project uses RSpec for comprehensive testing:
 
 ```bash
 # Run all tests
-bundle exec rspec
+make rspec
 
 # Run specific test file
-bundle exec rspec spec/requests/api/v1/evaluations_spec.rb
+make rspec SPEC=spec/requests/api/v1/evaluations_spec.rb
 
 # Run with coverage report
-COVERAGE=true bundle exec rspec
+COVERAGE=true make rspec
 ```
 
 ### Test Structure
@@ -236,8 +226,8 @@ ruby -v
 
 ```bash
 # If gems are missing or conflicting
-bundle clean --force
-bundle install
+make clean
+make install
 ```
 
 ### Background Jobs Not Processing

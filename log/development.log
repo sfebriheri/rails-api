@@ -1198,3 +1198,153 @@ Completed 200 OK in 81ms (Views: 28.6ms | ActiveRecord: 28.4ms | Allocations: 16
 
 
 Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-10 15:09:29 +0700
+Started GET "/api-docs/?ide_webview_request_time=1760172380209" for ::1 at 2025-10-11 15:46:20 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api-docs/index.html" for ::1 at 2025-10-11 15:46:20 +0700
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-10-11 15:46:20 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-10-11 15:46:20 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-10-11 15:46:20 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-11 15:46:21 +0700
+Started GET "/@vite/client" for ::1 at 2025-10-11 15:46:21 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/@vite/client"):
+  
+Started GET "/api-docs/?ide_webview_request_time=1760175029015" for ::1 at 2025-10-11 16:30:29 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (1.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api-docs/index.html" for ::1 at 2025-10-11 16:30:29 +0700
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-10-11 16:30:29 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-10-11 16:30:29 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-10-11 16:30:29 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-11 16:30:29 +0700
+Started GET "/@vite/client" for ::1 at 2025-10-11 16:30:30 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/@vite/client"):
+  
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (8.9ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (84.6ms)[0m  [1m[35mDROP DATABASE IF EXISTS "modern_platform_development"[0m
+  [1m[35m (122.0ms)[0m  [1m[35mDROP DATABASE IF EXISTS "modern_platform_test"[0m
+  [1m[35m (238.2ms)[0m  [1m[35mCREATE DATABASE "modern_platform_development" ENCODING = 'unicode'[0m
+  [1m[35m (211.2ms)[0m  [1m[35mCREATE DATABASE "modern_platform_test" ENCODING = 'unicode'[0m
+  [1m[35mSQL (9.2ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (2.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "articles" CASCADE[0m
+  [1m[35m (41.2ms)[0m  [1m[35mCREATE TABLE "articles" ("id" bigserial primary key, "title" character varying, "body" text, "published" boolean DEFAULT FALSE, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE IF EXISTS "documents" CASCADE[0m
+  [1m[35m (5.2ms)[0m  [1m[35mCREATE TABLE "documents" ("id" bigserial primary key, "filename" character varying NOT NULL, "content_type" character varying NOT NULL, "file_size" integer NOT NULL, "file_path" text NOT NULL, "document_type" character varying NOT NULL, "extracted_text" text, "metadata" json DEFAULT '{}', "checksum" character varying, "processed" boolean DEFAULT FALSE, "processed_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (11.2ms)[0m  [1m[35mCREATE INDEX "index_documents_on_checksum" ON "documents" ("checksum")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE INDEX "index_documents_on_document_type" ON "documents" ("document_type")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_documents_on_processed" ON "documents" ("processed")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "evaluation_jobs" CASCADE[0m
+  [1m[35m (7.3ms)[0m  [1m[35mCREATE TABLE "evaluation_jobs" ("id" bigserial primary key, "job_id" character varying NOT NULL, "job_title" character varying NOT NULL, "cv_document_id" bigint NOT NULL, "project_document_id" bigint NOT NULL, "status" character varying DEFAULT 'queued' NOT NULL, "cv_match_rate" decimal(3,2), "cv_feedback" text, "project_score" decimal(3,1), "project_feedback" text, "overall_summary" text, "processing_steps" json DEFAULT '{}', "error_message" text, "retry_count" integer DEFAULT 0, "started_at" timestamp(6), "completed_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_created_at" ON "evaluation_jobs" ("created_at")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_cv_document_id" ON "evaluation_jobs" ("cv_document_id")[0m
+  [1m[35m (47.7ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_evaluation_jobs_on_job_id" ON "evaluation_jobs" ("job_id")[0m
+  [1m[35m (5.1ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_job_title" ON "evaluation_jobs" ("job_title")[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_project_document_id" ON "evaluation_jobs" ("project_document_id")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_status" ON "evaluation_jobs" ("status")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "vector_embeddings" CASCADE[0m
+  [1m[35m (5.4ms)[0m  [1m[35mCREATE TABLE "vector_embeddings" ("id" bigserial primary key, "document_id" bigint NOT NULL, "content_chunk" text NOT NULL, "embedding_vector" json NOT NULL, "chunk_index" integer NOT NULL, "metadata" json DEFAULT '{}', "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_vector_embeddings_on_document_id_and_chunk_index" ON "vector_embeddings" ("document_id", "chunk_index")[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id" ON "vector_embeddings" ("document_id")[0m
+  [1m[35m (15.2ms)[0m  [1m[35mALTER TABLE "evaluation_jobs" ADD CONSTRAINT "fk_rails_c10c63f13b"
+FOREIGN KEY ("cv_document_id")
+  REFERENCES "documents" ("id")
+[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "evaluation_jobs" ADD CONSTRAINT "fk_rails_ae8c60a404"
+FOREIGN KEY ("project_document_id")
+  REFERENCES "documents" ("id")
+[0m
+  [1m[35m (3.7ms)[0m  [1m[35mALTER TABLE "vector_embeddings" ADD CONSTRAINT "fk_rails_a9121de589"
+FOREIGN KEY ("document_id")
+  REFERENCES "documents" ("id")
+[0m
+  [1m[35m (4.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (2.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251006000001)[0m
+  [1m[35m (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20241201000003),
+(20241201000002),
+(20241201000001);[0m
+  [1m[35m (4.2ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (1.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-10-11 09:35:59.273553', '2025-10-11 09:35:59.273557') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '5aa963a75220f8db77b8fa5973bc6ec348d85f60', '2025-10-11 09:35:59.281098', '2025-10-11 09:35:59.281101') RETURNING "key"[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "articles" CASCADE[0m
+  [1m[35m (7.4ms)[0m  [1m[35mCREATE TABLE "articles" ("id" bigserial primary key, "title" character varying, "body" text, "published" boolean DEFAULT FALSE, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "documents" CASCADE[0m
+  [1m[35m (4.0ms)[0m  [1m[35mCREATE TABLE "documents" ("id" bigserial primary key, "filename" character varying NOT NULL, "content_type" character varying NOT NULL, "file_size" integer NOT NULL, "file_path" text NOT NULL, "document_type" character varying NOT NULL, "extracted_text" text, "metadata" json DEFAULT '{}', "checksum" character varying, "processed" boolean DEFAULT FALSE, "processed_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE INDEX "index_documents_on_checksum" ON "documents" ("checksum")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE INDEX "index_documents_on_document_type" ON "documents" ("document_type")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_documents_on_processed" ON "documents" ("processed")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "evaluation_jobs" CASCADE[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "evaluation_jobs" ("id" bigserial primary key, "job_id" character varying NOT NULL, "job_title" character varying NOT NULL, "cv_document_id" bigint NOT NULL, "project_document_id" bigint NOT NULL, "status" character varying DEFAULT 'queued' NOT NULL, "cv_match_rate" decimal(3,2), "cv_feedback" text, "project_score" decimal(3,1), "project_feedback" text, "overall_summary" text, "processing_steps" json DEFAULT '{}', "error_message" text, "retry_count" integer DEFAULT 0, "started_at" timestamp(6), "completed_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_created_at" ON "evaluation_jobs" ("created_at")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_cv_document_id" ON "evaluation_jobs" ("cv_document_id")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_evaluation_jobs_on_job_id" ON "evaluation_jobs" ("job_id")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_job_title" ON "evaluation_jobs" ("job_title")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_project_document_id" ON "evaluation_jobs" ("project_document_id")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_status" ON "evaluation_jobs" ("status")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "vector_embeddings" CASCADE[0m
+  [1m[35m (10.1ms)[0m  [1m[35mCREATE TABLE "vector_embeddings" ("id" bigserial primary key, "document_id" bigint NOT NULL, "content_chunk" text NOT NULL, "embedding_vector" json NOT NULL, "chunk_index" integer NOT NULL, "metadata" json DEFAULT '{}', "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_vector_embeddings_on_document_id_and_chunk_index" ON "vector_embeddings" ("document_id", "chunk_index")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_vector_embeddings_on_document_id" ON "vector_embeddings" ("document_id")[0m
+  [1m[35m (3.1ms)[0m  [1m[35mALTER TABLE "evaluation_jobs" ADD CONSTRAINT "fk_rails_c10c63f13b"
+FOREIGN KEY ("cv_document_id")
+  REFERENCES "documents" ("id")
+[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "evaluation_jobs" ADD CONSTRAINT "fk_rails_ae8c60a404"
+FOREIGN KEY ("project_document_id")
+  REFERENCES "documents" ("id")
+[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "vector_embeddings" ADD CONSTRAINT "fk_rails_a9121de589"
+FOREIGN KEY ("document_id")
+  REFERENCES "documents" ("id")
+[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251006000001)[0m
+  [1m[35m (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20241201000003),
+(20241201000002),
+(20241201000001);[0m
+  [1m[35m (4.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.7ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-10-11 09:35:59.441819', '2025-10-11 09:35:59.441822') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Update (1.9ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2025-10-11 09:35:59.445895' WHERE "ar_internal_metadata"."key" = 'environment'[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '5aa963a75220f8db77b8fa5973bc6ec348d85f60', '2025-10-11 09:35:59.452279', '2025-10-11 09:35:59.452283') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api-docs/index.html" for ::1 at 2025-10-11 16:36:09 +0700
+Started GET "/api-docs/index.html" for ::1 at 2025-10-11 16:36:09 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-10-11 16:36:09 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-10-11 16:36:09 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-10-11 16:36:09 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-11 16:36:09 +0700
+Started GET "/@vite/client" for ::1 at 2025-10-11 16:36:09 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/@vite/client"):
+  
+Started GET "/api-docs/index.html" for ::1 at 2025-10-11 16:40:00 +0700
+Started GET "/api-docs/index.html" for ::1 at 2025-10-11 16:40:00 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-10-11 16:40:00 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-10-11 16:40:00 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-10-11 16:40:00 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-11 16:40:01 +0700
+Started GET "/@vite/client" for ::1 at 2025-10-11 16:40:01 +0700
+Started GET "/api-docs/?ide_webview_request_time=1760175687050" for ::1 at 2025-10-11 16:41:27 +0700
+Started GET "/api-docs/index.html" for ::1 at 2025-10-11 16:41:27 +0700
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-10-11 16:41:27 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-10-11 16:41:27 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-10-11 16:41:27 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-11 16:41:27 +0700
+Started GET "/@vite/client" for ::1 at 2025-10-11 16:41:27 +0700
