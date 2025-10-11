@@ -123,3 +123,198 @@ docker-compose.override.yml
 
 # Ignore Tailwind CSS output
 /app/assets/stylesheets/application.tailwind.css
+
+# ===== AI/ML & API Development =====
+# Ignore API keys and secrets
+*.key
+*.pem
+*.p12
+*.pfx
+.api_keys
+.secrets
+.env.local
+.env.production
+.env.staging
+
+# Ignore AI/ML model files and data
+/models/*
+!/models/.keep
+/data/*
+!/data/.keep
+/datasets/*
+!/datasets/.keep
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.onnx
+*.pb
+*.tflite
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# Ignore vector databases and embeddings
+/vector_db/*
+!/vector_db/.keep
+/embeddings/*
+!/embeddings/.keep
+*.faiss
+*.index
+*.ann
+
+# Ignore LLM cache and temporary files
+/llm_cache/*
+!/llm_cache/.keep
+/ai_temp/*
+!/ai_temp/.keep
+
+# ===== Development & Testing =====
+# Ignore additional test files
+/spec/tmp/*
+/spec/fixtures/files/*
+!/spec/fixtures/files/.keep
+/test/tmp/*
+/test/fixtures/files/*
+!/test/fixtures/files/.keep
+
+# Ignore performance profiling
+/tmp/profiling/*
+/performance/*
+*.prof
+*.stackprof
+
+# Ignore security scan results
+/security_reports/*
+/brakeman_output.html
+/bundle-audit.txt
+
+# Ignore documentation generation
+/doc/api/*
+/doc/app/*
+/.yardoc
+/yard-doc/*
+
+# ===== Background Jobs & Queue =====
+# Ignore Sidekiq and Redis dumps
+dump.rdb
+*.rdb
+/redis-data/*
+
+# Ignore job queue temporary files
+/jobs/tmp/*
+/queue_temp/*
+
+# ===== File Uploads & Processing =====
+# Ignore uploaded documents and processed files
+/uploads/*
+!/uploads/.keep
+/processed/*
+!/processed/.keep
+/extracted_text/*
+!/extracted_text/.keep
+/temp_files/*
+!/temp_files/.keep
+
+# Ignore sample files (keep originals for testing)
+# /sample_*.pdf
+# /sample_*.txt
+# /sample_*.html
+
+# ===== Monitoring & Logs =====
+# Ignore monitoring and metrics
+/metrics/*
+/monitoring/*
+*.log.*
+*.out
+*.err
+
+# Ignore APM and error tracking
+/newrelic_agent.log
+/sentry-debug-meta.properties
+
+# ===== Additional Development Tools =====
+# Ignore Solargraph (Ruby Language Server)
+.solargraph.yml
+
+# Ignore RuboCop cache
+.rubocop-*
+
+# Ignore Bundler audit cache
+.bundle-audit.yml
+
+# Ignore Rails generators and scaffolds temp
+/lib/generators/tmp/*
+
+# Ignore Spring (Rails application preloader)
+/spring/*.pid
+
+# Ignore Capistrano deployment
+/config/deploy/*
+/log/capistrano.log
+
+# ===== Platform Specific =====
+# Ignore Windows specific files
+*.lnk
+desktop.ini
+
+# Ignore Linux specific files
+.directory
+.Trash-*
+
+# Ignore network drives
+.fuse_hidden*
+.nfs*
+
+# ===== Backup & Archive Files =====
+# Ignore backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+*.tmp
+
+# Ignore archive files
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.rar
+*.7z
+
+# ===== IDE & Editor Specific =====
+# Ignore Emacs files
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Ignore Nano files
+*.save
+*.swp
+
+# Ignore TextMate
+*.tmproj
+*.tmproject
+tmtags
+
+# ===== Miscellaneous =====
+# Ignore local configuration overrides
+/config/local.yml
+/config/settings.local.yml
+/config/settings/*.local.yml
+/config/environments/*.local.yml
+
+# Ignore personal notes and documentation
+/NOTES.md
+/TODO.md
+/PERSONAL_*
+/notes/*
+/docs/personal/*
