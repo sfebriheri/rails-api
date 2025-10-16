@@ -1,0 +1,99 @@
+name: Ruby on Rails CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: modern_platform_test
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/modern_platform_test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+          bundler-cache: true
+
+      - name: Install system dependencies (libpq)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev
+
+      - name: Verify bundle
+        run: |
+          bundle config set without 'production'
+          bundle install --jobs 4 --retry 3
+
+      - name: Prepare database
+        run: |
+          bundle exec rails db:prepare
+
+      - name: Run RSpec
+        run: |
+          mkdir -p tmp
+          bundle exec rspec --format progress --format RspecJunitFormatter --out tmp/rspec.xml
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rspec-report
+          path: tmp/rspec.xml
+
+  lint:
+    name: Lint & Security
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+          bundler-cache: true
+
+      - name: Install linters
+        run: |
+          bundle config set without 'production'
+          bundle install --jobs 4 --retry 3
+
+      - name: RuboCop
+        run: |
+          bundle exec rubocop --format progress || true
+
+      - name: Brakeman
+        run: |
+          bundle exec brakeman -q -w2 || true
+
+      - name: Bundler Audit
+        run: |
+          bundle exec bundler-audit check --update || true
