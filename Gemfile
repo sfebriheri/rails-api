@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "3.2.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1.3", ">= 7.1.3.2"
+gem "rails", "~> 7.1.5", ">= 7.1.5.2"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -51,8 +51,8 @@ gem "dotenv-rails", "~> 2.8"
 gem "jwt", "~> 2.7"
 
 # Swagger API documentation
-gem "rswag-api", "~> 2.13"
-gem "rswag-ui", "~> 2.13"
+gem "rswag-api", "~> 2.16"
+gem "rswag-ui", "~> 2.16"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -65,6 +65,9 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
+
+# Update thor to fix CVE-2025-54314
+gem "thor", ">= 1.4.0"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
@@ -80,7 +83,7 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 6.0'
   gem 'simplecov', '~> 0.22', require: false
   gem 'rspec_junit_formatter', '~> 0.6'
-  gem 'rswag-specs', '~> 2.13'
+  gem 'rswag-specs', '~> 2.16'
 end
 
 group :development do
@@ -91,9 +94,16 @@ group :development do
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
-  gem 'rack', '>= 3.1.12'
-  gem 'nokogiri', '>= 1.18.3' 
-  gem 'net-imap', '>= 0.5.6'
+
+  # Security updates
+  # Update to fix CVE-2025-61780, CVE-2025-61770, CVE-2025-61771, CVE-2025-61772, CVE-2025-61919
+  gem 'rack', '>= 3.1.18'
+  # Update to fix GHSA-353f-x4gh-cqq8, GHSA-5w6v-399v-w3cc
+  gem 'nokogiri', '>= 1.18.9'
+  # Update to fix CVE-2025-43857
+  gem 'net-imap', '>= 0.5.7'
+  # Update to fix GHSA-9j94-67jr-4cqj
+  gem 'rack-session', '>= 2.1.1'
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
