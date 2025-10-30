@@ -70,9 +70,10 @@ jobs:
 
       - name: Prepare database
         run: |
-          bundle exec rails db:create
-          bundle exec rails db:migrate
-          bundle exec rails db:seed || true
+          SKIP_RATE_LIMITER=true bundle exec rake db:drop --trace || true
+          SKIP_RATE_LIMITER=true DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rake db:create --trace
+          SKIP_RATE_LIMITER=true DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rake db:migrate --trace
+          SKIP_RATE_LIMITER=true DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rake db:seed --trace || true
 
       - name: Run RSpec
         run: |
