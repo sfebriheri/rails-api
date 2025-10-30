@@ -10,13 +10,17 @@ module Api
           return render_error('Both CV and project report files are required', status: :bad_request)
         end
 
-        unless valid_pdf?(cv_file) && valid_pdf?(project_file)
-          return render_error('Only PDF files are allowed', status: :bad_request)
-        end
-
         begin
-          cv_document = save_document(cv_file, 'cv')
-          project_document = save_document(project_file, 'project_report')
+          # Ensure user is authenticated
+          raise "User not authenticated" unless @current_user&.id
+
+          # Validate and save CV file
+          cv_data = FileService.validate_and_save_pdf(cv_file, @current_user.id)
+          cv_document = Document.create!(**cv_data, document_type: 'cv')
+
+          # Validate and save project report file
+          project_data = FileService.validate_and_save_pdf(project_file, @current_user.id)
+          project_document = Document.create!(**project_data, document_type: 'project_report')
 
           # Queue text extraction jobs
           ExtractTextJob.perform_later(cv_document.id)
@@ -27,42 +31,19 @@ module Api
             project_report: document_response(project_document)
           }, status: :created)
 
+        rescue FileService::InvalidFileError => e
+          render_error(e.message, status: :bad_request)
+        rescue FileService::FileTooLargeError => e
+          render_error(e.message, status: :request_entity_too_large)
+        rescue FileService::CorruptedFileError => e
+          render_error(e.message, status: :unprocessable_entity)
         rescue => e
-          Rails.logger.error "File upload failed: #{e.message}"
+          Rails.logger.error "File upload failed: #{e.class} - #{e.message}"
           render_error('File upload failed', status: :internal_server_error)
         end
       end
 
       private
-
-      def valid_pdf?(file)
-        file.present? && file.content_type == 'application/pdf'
-      end
-
-      def save_document(file, document_type)
-        # Create uploads directory if it doesn't exist
-        upload_dir = Rails.root.join('storage', 'uploads')
-        FileUtils.mkdir_p(upload_dir)
-
-        # Generate unique filename
-        timestamp = Time.current.strftime('%Y%m%d_%H%M%S')
-        filename = "#{timestamp}_#{SecureRandom.hex(8)}_#{file.original_filename}"
-        file_path = upload_dir.join(filename)
-
-        # Save file to disk
-        File.open(file_path, 'wb') do |f|
-          f.write(file.read)
-        end
-
-        # Create document record
-        Document.create!(
-          filename: file.original_filename,
-          content_type: file.content_type,
-          file_size: file.size,
-          file_path: file_path.to_s,
-          document_type: document_type
-        )
-      end
 
       def document_response(document)
         {

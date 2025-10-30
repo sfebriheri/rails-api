@@ -93,18 +93,46 @@ class LlmService
   end
 
   def api_key
-    ENV['OPENAI_API_KEY'] || ENV['LLM_API_KEY'] || 'mock-api-key'
+    key = ENV['OPENAI_API_KEY'] || ENV['LLM_API_KEY']
+
+    if key.blank?
+      raise LlmError, 'LLM API key not configured. Set OPENAI_API_KEY or LLM_API_KEY environment variable.'
+    end
+
+    if Rails.env.production? && key.length < 20
+      raise LlmError, 'Invalid API key format. Please check your LLM_API_KEY configuration.'
+    end
+
+    key
   end
 
   def base_url
-    ENV['LLM_BASE_URL'] || 'https://api.openai.com'
+    url = ENV['LLM_BASE_URL'] || 'https://api.openai.com'
+
+    unless url.start_with?('http://', 'https://')
+      raise LlmError, 'Invalid LLM_BASE_URL. Must start with http:// or https://'
+    end
+
+    url
   end
 
   def model_name
-    ENV['LLM_MODEL'] || 'gpt-4'
+    model = ENV['LLM_MODEL']
+
+    if model.blank?
+      raise LlmError, 'LLM model not configured. Set LLM_MODEL environment variable.'
+    end
+
+    model
   end
 
   def embedding_model
-    ENV['EMBEDDING_MODEL'] || 'text-embedding-ada-002'
+    model = ENV['EMBEDDING_MODEL']
+
+    if model.blank?
+      raise LlmError, 'Embedding model not configured. Set EMBEDDING_MODEL environment variable.'
+    end
+
+    model
   end
 end
