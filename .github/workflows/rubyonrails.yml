@@ -65,6 +65,7 @@ jobs:
       - name: Verify bundle
         run: |
           bundle config set without 'production'
+          bundle config set frozen false
           bundle install --jobs 4 --retry 3
 
       - name: Prepare database
@@ -102,6 +103,7 @@ jobs:
       - name: Install linters
         run: |
           bundle config set without 'production'
+          bundle config set frozen false
           bundle install --jobs 4 --retry 3
 
       - name: RuboCop
