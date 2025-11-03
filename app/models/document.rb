@@ -7,7 +7,6 @@ class Document < ApplicationRecord
   validates :file_path, presence: true
   validates :document_type, presence: true, inclusion: { in: DOCUMENT_TYPES }
   validates :checksum, presence: true, uniqueness: true
-  validates :user_id, allow_nil: true  # Optional during migration
 
   has_many :vector_embeddings, dependent: :destroy
   has_many :cv_evaluations, class_name: 'EvaluationJob', foreign_key: 'cv_document_id'

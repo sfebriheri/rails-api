@@ -1348,3 +1348,451 @@ Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-10-11 16:41:27 +070
 Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-10-11 16:41:27 +0700
 Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-10-11 16:41:27 +0700
 Started GET "/@vite/client" for ::1 at 2025-10-11 16:41:27 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (3.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/up" for ::1 at 2025-11-03 08:50:23 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate
+
+You have 4 pending migrations:
+
+db/migrate/20251030000000_create_users_table.rb
+db/migrate/20251030000001_create_audit_logs.rb
+db/migrate/20251030000002_add_user_to_documents.rb
+db/migrate/20251030000003_add_user_to_evaluation_jobs.rb
+
+
+):
+  
+activerecord (7.1.6) lib/active_record/migration.rb:755:in `check_pending_migrations'
+activerecord (7.1.6) lib/active_record/migration.rb:644:in `block (2 levels) in call'
+activesupport (7.1.6) lib/active_support/file_update_checker.rb:85:in `execute'
+activerecord (7.1.6) lib/active_record/migration.rb:649:in `block in call'
+activerecord (7.1.6) lib/active_record/migration.rb:641:in `synchronize'
+activerecord (7.1.6) lib/active_record/migration.rb:641:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+activesupport (7.1.6) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.1.6) lib/action_dispatch/middleware/callbacks.rb:28:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/actionable_exceptions.rb:16:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (7.1.6) lib/rails/rack/logger.rb:37:in `call_app'
+railties (7.1.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (7.1.6) lib/active_support/tagged_logging.rb:139:in `block in tagged'
+activesupport (7.1.6) lib/active_support/tagged_logging.rb:39:in `tagged'
+activesupport (7.1.6) lib/active_support/tagged_logging.rb:139:in `tagged'
+activesupport (7.1.6) lib/active_support/broadcast_logger.rb:241:in `method_missing'
+railties (7.1.6) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.5.2) lib/sprockets/rails/quiet_assets.rb:17:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/remote_ip.rb:92:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/request_id.rb:28:in `call'
+rack (3.2.4) lib/rack/method_override.rb:28:in `call'
+rack (3.2.4) lib/rack/runtime.rb:24:in `call'
+activesupport (7.1.6) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/server_timing.rb:59:in `block in call'
+actionpack (7.1.6) lib/action_dispatch/middleware/server_timing.rb:24:in `collect_events'
+actionpack (7.1.6) lib/action_dispatch/middleware/server_timing.rb:58:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/static.rb:25:in `call'
+rack (3.2.4) lib/rack/sendfile.rb:131:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/host_authorization.rb:141:in `call'
+railties (7.1.6) lib/rails/engine.rb:536:in `call'
+puma (7.1.0) lib/puma/configuration.rb:300:in `call'
+puma (7.1.0) lib/puma/request.rb:101:in `block in handle_request'
+puma (7.1.0) lib/puma/thread_pool.rb:355:in `with_force_shutdown'
+puma (7.1.0) lib/puma/request.rb:100:in `handle_request'
+puma (7.1.0) lib/puma/server.rb:503:in `process_client'
+puma (7.1.0) lib/puma/server.rb:262:in `block in run'
+puma (7.1.0) lib/puma/thread_pool.rb:182:in `block in spawn_thread'
+Started GET "/api/v1/job_descriptions" for ::1 at 2025-11-03 08:50:26 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate
+
+You have 4 pending migrations:
+
+db/migrate/20251030000000_create_users_table.rb
+db/migrate/20251030000001_create_audit_logs.rb
+db/migrate/20251030000002_add_user_to_documents.rb
+db/migrate/20251030000003_add_user_to_evaluation_jobs.rb
+
+
+):
+  
+activerecord (7.1.6) lib/active_record/migration.rb:755:in `check_pending_migrations'
+activerecord (7.1.6) lib/active_record/migration.rb:644:in `block (2 levels) in call'
+activesupport (7.1.6) lib/active_support/file_update_checker.rb:85:in `execute'
+activerecord (7.1.6) lib/active_record/migration.rb:649:in `block in call'
+activerecord (7.1.6) lib/active_record/migration.rb:641:in `synchronize'
+activerecord (7.1.6) lib/active_record/migration.rb:641:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+activesupport (7.1.6) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.1.6) lib/action_dispatch/middleware/callbacks.rb:28:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/actionable_exceptions.rb:16:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (7.1.6) lib/rails/rack/logger.rb:37:in `call_app'
+railties (7.1.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (7.1.6) lib/active_support/tagged_logging.rb:139:in `block in tagged'
+activesupport (7.1.6) lib/active_support/tagged_logging.rb:39:in `tagged'
+activesupport (7.1.6) lib/active_support/tagged_logging.rb:139:in `tagged'
+activesupport (7.1.6) lib/active_support/broadcast_logger.rb:241:in `method_missing'
+railties (7.1.6) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.5.2) lib/sprockets/rails/quiet_assets.rb:17:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/remote_ip.rb:92:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/request_id.rb:28:in `call'
+rack (3.2.4) lib/rack/method_override.rb:28:in `call'
+rack (3.2.4) lib/rack/runtime.rb:24:in `call'
+activesupport (7.1.6) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/server_timing.rb:59:in `block in call'
+actionpack (7.1.6) lib/action_dispatch/middleware/server_timing.rb:24:in `collect_events'
+actionpack (7.1.6) lib/action_dispatch/middleware/server_timing.rb:58:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/static.rb:25:in `call'
+rack (3.2.4) lib/rack/sendfile.rb:131:in `call'
+actionpack (7.1.6) lib/action_dispatch/middleware/host_authorization.rb:141:in `call'
+railties (7.1.6) lib/rails/engine.rb:536:in `call'
+puma (7.1.0) lib/puma/configuration.rb:300:in `call'
+puma (7.1.0) lib/puma/request.rb:101:in `block in handle_request'
+puma (7.1.0) lib/puma/thread_pool.rb:355:in `with_force_shutdown'
+puma (7.1.0) lib/puma/request.rb:100:in `handle_request'
+puma (7.1.0) lib/puma/server.rb:503:in `process_client'
+puma (7.1.0) lib/puma/server.rb:262:in `block in run'
+puma (7.1.0) lib/puma/thread_pool.rb:182:in `block in spawn_thread'
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (3.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+Migrating to CreateUsersTable (20251030000000)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (28.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "email" character varying NOT NULL, "password_hash" character varying, "role" character varying DEFAULT 'user', "active" boolean DEFAULT TRUE, "last_login_at" timestamp(6), "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE INDEX "index_users_on_active" ON "users" ("active")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251030000000') RETURNING "version"[0m
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateAuditLogs (20251030000001)
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.3ms)[0m  [1m[35mCREATE TABLE "audit_logs" ("id" bigserial primary key, "action" character varying NOT NULL, "user_id" bigint, "resource_type" character varying, "resource_id" bigint, "ip_address" inet, "user_agent" character varying, "details" jsonb DEFAULT '{}', "timestamp" timestamp NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_audit_logs_on_action" ON "audit_logs" ("action")[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_audit_logs_on_user_id" ON "audit_logs" ("user_id")[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE INDEX "index_audit_logs_on_resource_type_and_resource_id" ON "audit_logs" ("resource_type", "resource_id")[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_audit_logs_on_timestamp" ON "audit_logs" ("timestamp")[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE INDEX "index_audit_logs_on_ip_address" ON "audit_logs" ("ip_address")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_audit_logs_on_user_id_and_timestamp" ON "audit_logs" ("user_id", "timestamp")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_audit_logs_on_action_and_timestamp" ON "audit_logs" ("action", "timestamp")[0m
+  [1m[35m (6.7ms)[0m  [1m[35mALTER TABLE "audit_logs" ADD CONSTRAINT "fk_rails_1f26bc34ae"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ ON DELETE SET NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251030000001') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddUserToDocuments (20251030000002)
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "documents" ADD "user_id" bigint[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_documents_on_user_id" ON "documents" ("user_id")[0m
+  [1m[35m (2.0ms)[0m  [1m[35mALTER TABLE "documents" ADD CONSTRAINT "fk_rails_2be0318c46"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ ON DELETE CASCADE[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "documents" ADD "processing_error" text[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251030000002') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddUserToEvaluationJobs (20251030000003)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "evaluation_jobs" ADD "user_id" bigint[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE INDEX "index_evaluation_jobs_on_user_id" ON "evaluation_jobs" ("user_id")[0m
+  [1m[35m (3.0ms)[0m  [1m[35mALTER TABLE "evaluation_jobs" ADD CONSTRAINT "fk_rails_1f77039a86"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ ON DELETE CASCADE[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251030000003') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7650501214609530165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/up" for ::1 at 2025-11-03 08:50:41 +0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::HealthController#show as */*
+  Rendering html template
+  Rendered html template (Duration: 0.0ms | Allocations: 8)
+Completed 200 OK in 8ms (Views: 2.3ms | ActiveRecord: 0.0ms | Allocations: 2231)
+
+
+Started GET "/api/v1/job_descriptions" for ::1 at 2025-11-03 08:50:43 +0700
+Processing by Api::V1::JobDescriptionsController#index as */*
+Filter chain halted as :authenticate_request! rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 301)
+
+
+Started GET "/swagger/index.html" for ::1 at 2025-11-03 08:51:12 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/swagger/index.html"):
+  
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-11-03 08:51:25 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/" for ::1 at 2025-11-03 08:51:48 +0700
+Processing by Rails::WelcomeController#index as HTML
+  Rendering vendor/bundle/ruby/3.2.0/gems/railties-7.1.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered vendor/bundle/ruby/3.2.0/gems/railties-7.1.6/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.6ms | Allocations: 270)
+Completed 200 OK in 3ms (Views: 1.6ms | ActiveRecord: 0.0ms | Allocations: 1188)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-11-03 08:51:48 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/register" for ::1 at 2025-11-03 08:52:00 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/register"):
+  
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-11-03 08:52:00 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started POST "/api/v1/register" for ::1 at 2025-11-03 08:54:08 +0700
+Processing by Api::V1::UsersController#register as */*
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "name"=>"Test User", "user"=>{"email"=>"[FILTERED]"}}
+  [1m[36mUser Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:30:in `register'
+Registration error: ActiveModel::UnknownAttributeError - unknown attribute 'name' for User.
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activemodel-7.1.6/lib/active_model/attribute_assignment.rb:51:in `_assign_attribute'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.6/lib/active_record/attribute_assignment.rb:19:in `block in _assign_attributes'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.6/lib/active_record/attribute_assignment.rb:11:in `each'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.6/lib/active_record/attribute_assignment.rb:11:in `_assign_attributes'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activemodel-7.1.6/lib/active_model/attribute_assignment.rb:34:in `assign_attributes'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.6/lib/active_record/core.rb:453:in `initialize'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.6/lib/active_record/inheritance.rb:76:in `new'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.6/lib/active_record/inheritance.rb:76:in `new'
+/Users/mymac/Downloads/rails-api/app/controllers/api/v1/users_controller.rb:36:in `register'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/abstract_controller/base.rb:224:in `process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_controller/metal/rendering.rb:165:in `process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/abstract_controller/callbacks.rb:259:in `block in process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/turbo-rails-2.0.20/lib/turbo-rails.rb:24:in `with_request_id'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/turbo-rails-2.0.20/app/controllers/concerns/turbo/request_id_tracking.rb:10:in `turbo_tracking_request_id'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/callbacks.rb:130:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actiontext-7.1.6/lib/action_text/rendering.rb:23:in `with_renderer'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actiontext-7.1.6/lib/action_text/engine.rb:69:in `block (4 levels) in <class:Engine>'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/callbacks.rb:130:in `instance_exec'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/callbacks.rb:130:in `block in run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/callbacks.rb:141:in `run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/abstract_controller/callbacks.rb:258:in `process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_controller/metal/rescue.rb:25:in `process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_controller/metal/instrumentation.rb:74:in `block in process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/notifications.rb:206:in `block in instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/notifications/instrumenter.rb:58:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/notifications.rb:206:in `instrument'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_controller/metal/instrumentation.rb:73:in `process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_controller/metal/params_wrapper.rb:261:in `process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.6/lib/active_record/railties/controller_runtime.rb:32:in `process_action'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/abstract_controller/base.rb:160:in `process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionview-7.1.6/lib/action_view/rendering.rb:40:in `process'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_controller/metal.rb:227:in `dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_controller/metal.rb:309:in `dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/routing/route_set.rb:49:in `dispatch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/routing/route_set.rb:32:in `serve'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/journey/router.rb:51:in `block in serve'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/journey/router.rb:131:in `block in find_routes'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/journey/router.rb:124:in `each'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/journey/router.rb:124:in `find_routes'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/journey/router.rb:32:in `serve'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/routing/route_set.rb:882:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-attack-6.8.0/lib/rack/attack.rb:129:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-3.2.4/lib/rack/tempfile_reaper.rb:20:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-3.2.4/lib/rack/etag.rb:29:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-3.2.4/lib/rack/conditional_get.rb:44:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-3.2.4/lib/rack/head.rb:15:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/http/permissions_policy.rb:36:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/http/content_security_policy.rb:36:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-session-2.1.1/lib/rack/session/abstract/id.rb:274:in `context'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-session-2.1.1/lib/rack/session/abstract/id.rb:268:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/cookies.rb:689:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activerecord-7.1.6/lib/active_record/migration.rb:655:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/callbacks.rb:101:in `run_callbacks'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/callbacks.rb:28:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/executor.rb:14:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/actionable_exceptions.rb:16:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/web-console-4.2.1/lib/web_console/middleware.rb:132:in `call_app'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/web-console-4.2.1/lib/web_console/middleware.rb:28:in `block in call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/web-console-4.2.1/lib/web_console/middleware.rb:17:in `catch'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/web-console-4.2.1/lib/web_console/middleware.rb:17:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/railties-7.1.6/lib/rails/rack/logger.rb:37:in `call_app'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/railties-7.1.6/lib/rails/rack/logger.rb:24:in `block in call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/tagged_logging.rb:139:in `block in tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/tagged_logging.rb:39:in `tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/tagged_logging.rb:139:in `tagged'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/broadcast_logger.rb:241:in `method_missing'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/railties-7.1.6/lib/rails/rack/logger.rb:24:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/sprockets-rails-3.5.2/lib/sprockets/rails/quiet_assets.rb:17:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/remote_ip.rb:92:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/request_id.rb:28:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-3.2.4/lib/rack/method_override.rb:28:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-3.2.4/lib/rack/runtime.rb:24:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/activesupport-7.1.6/lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/server_timing.rb:59:in `block in call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/server_timing.rb:24:in `collect_events'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/server_timing.rb:58:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/executor.rb:14:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/static.rb:25:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/rack-3.2.4/lib/rack/sendfile.rb:131:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/actionpack-7.1.6/lib/action_dispatch/middleware/host_authorization.rb:141:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/railties-7.1.6/lib/rails/engine.rb:536:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/puma-7.1.0/lib/puma/configuration.rb:300:in `call'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/puma-7.1.0/lib/puma/request.rb:101:in `block in handle_request'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/puma-7.1.0/lib/puma/thread_pool.rb:355:in `with_force_shutdown'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/puma-7.1.0/lib/puma/request.rb:100:in `handle_request'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/puma-7.1.0/lib/puma/server.rb:503:in `process_client'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/puma-7.1.0/lib/puma/server.rb:262:in `block in run'
+/Users/mymac/Downloads/rails-api/vendor/bundle/ruby/3.2.0/gems/puma-7.1.0/lib/puma/thread_pool.rb:182:in `block in spawn_thread'
+Completed 500 Internal Server Error in 345ms (Views: 0.3ms | ActiveRecord: 15.8ms | Allocations: 13115)
+
+
+Started GET "/register" for ::1 at 2025-11-03 08:54:50 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/register"):
+  
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-11-03 08:54:50 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started POST "/api/v1/register" for ::1 at 2025-11-03 08:55:06 +0700
+Processing by Api::V1::UsersController#register as */*
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]"}}
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:30:in `register'
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:43:in `register'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/users_controller.rb:43:in `register'
+  [1m[36mUser Create (6.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "password_hash", "role", "active", "last_login_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["email", "[FILTERED]"], ["password_hash", "[FILTERED]"], ["role", "user"], ["active", true], ["last_login_at", nil], ["created_at", "2025-11-03 01:55:06.987952"], ["updated_at", "2025-11-03 01:55:06.987952"]]
+  ↳ app/controllers/api/v1/users_controller.rb:43:in `register'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/users_controller.rb:43:in `register'
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from secret_key at /Users/mymac/Downloads/rails-api/app/services/auth_service.rb:62)
+Completed 201 Created in 253ms (Views: 0.3ms | ActiveRecord: 13.9ms | Allocations: 13561)
+
+
+Started POST "/api/v1/login" for ::1 at 2025-11-03 08:55:16 +0700
+Processing by Api::V1::UsersController#login as */*
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/models/user.rb:12:in `authenticate'
+Completed 200 OK in 257ms (Views: 0.1ms | ActiveRecord: 0.6ms | Allocations: 1897)
+
+
+Started GET "/api/v1/job_descriptions" for ::1 at 2025-11-03 08:55:23 +0700
+Processing by Api::V1::JobDescriptionsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/base_controller.rb:40:in `set_current_user'
+Completed 500 Internal Server Error in 8ms (ActiveRecord: 0.3ms | Allocations: 3769)
+
+
+  
+ArgumentError (You need to supply at least one validation):
+  
+app/models/document.rb:10:in `<class:Document>'
+app/models/document.rb:1:in `<main>'
+app/controllers/api/v1/job_descriptions_controller.rb:8:in `index'
+Started GET "/api/v1/job_descriptions" for ::1 at 2025-11-03 08:55:51 +0700
+Processing by Api::V1::JobDescriptionsController#index as */*
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from secret_key at /Users/mymac/Downloads/rails-api/app/services/auth_service.rb:62)
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/base_controller.rb:40:in `set_current_user'
+  [1m[36mDocument Load (0.6ms)[0m  [1m[34mSELECT "documents".* FROM "documents" WHERE "documents"."document_type" = $1 ORDER BY "documents"."created_at" DESC[0m  [["document_type", "job_description"]]
+  ↳ app/controllers/api/v1/job_descriptions_controller.rb:9:in `map'
+Completed 200 OK in 29ms (Views: 0.2ms | ActiveRecord: 5.1ms | Allocations: 14239)
+
+
+Started GET "/api/v1/register" for ::1 at 2025-11-03 08:55:57 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/register"):
+  
+Started GET "/register" for ::1 at 2025-11-03 08:56:11 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/register"):
+  
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-11-03 08:56:11 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/rails/info/routes?query=\" for ::1 at 2025-11-03 08:56:12 +0700
+Processing by Rails::InfoController#routes as */*
+  Parameters: {"query"=>"\\"}
+Completed 200 OK in 11ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 11174)
+
+
+Started GET "/api/v1/register" for ::1 at 2025-11-03 08:58:32 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/register"):
+  
+Started GET "/api/v1/register" for ::1 at 2025-11-03 08:58:35 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/register"):
+  
+Started GET "/api/v1/users" for ::1 at 2025-11-03 08:59:01 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users"):
+  
+Started GET "/" for ::1 at 2025-11-03 08:59:12 +0700
+Processing by Rails::WelcomeController#index as HTML
+  Rendering vendor/bundle/ruby/3.2.0/gems/railties-7.1.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered vendor/bundle/ruby/3.2.0/gems/railties-7.1.6/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.3ms | Allocations: 261)
+Completed 200 OK in 6ms (Views: 3.9ms | ActiveRecord: 0.0ms | Allocations: 1983)
+
+
+Started GET "/api-docs" for ::1 at 2025-11-03 08:59:39 +0700
+Started GET "/api-docs/index.html" for ::1 at 2025-11-03 08:59:39 +0700
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-11-03 08:59:39 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-11-03 08:59:39 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-11-03 08:59:39 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-11-03 08:59:39 +0700
+Started GET "/api-docs/favicon-32x32.png" for ::1 at 2025-11-03 08:59:39 +0700
+Started GET "/api-docs/index.html" for ::1 at 2025-11-03 09:00:08 +0700
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-11-03 09:00:08 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-11-03 09:00:08 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-11-03 09:00:08 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-11-03 09:00:08 +0700
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-11-03 09:01:18 +0700
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-11-03 09:01:18 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/api-docs/swagger-ui-bundle.js.map" for ::1 at 2025-11-03 09:01:18 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js.map" for ::1 at 2025-11-03 09:01:18 +0700
+Started GET "/api-docs/swagger-ui.css.map" for ::1 at 2025-11-03 09:01:18 +0700
+Started GET "/api-docs/index.html" for ::1 at 2025-11-03 09:01:23 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js" for ::1 at 2025-11-03 09:01:23 +0700
+Started GET "/api-docs/swagger-ui-bundle.js" for ::1 at 2025-11-03 09:01:23 +0700
+Started GET "/api-docs/swagger-ui.css" for ::1 at 2025-11-03 09:01:23 +0700
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-11-03 09:01:24 +0700
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/api-docs/swagger-ui.css.map" for ::1 at 2025-11-03 09:01:24 +0700
+Started GET "/api-docs/swagger-ui-bundle.js.map" for ::1 at 2025-11-03 09:01:24 +0700
+Started GET "/api-docs/swagger-ui-standalone-preset.js.map" for ::1 at 2025-11-03 09:01:24 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-11-03 09:01:24 +0700
+Started GET "/api-docs/favicon-32x32.png" for ::1 at 2025-11-03 09:01:24 +0700
+Started GET "/api-docs/v1/swagger.yaml" for ::1 at 2025-11-03 09:01:54 +0700

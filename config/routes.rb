@@ -13,13 +13,15 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
-      # Articles endpoints removed as non-mandatory
+      # Authentication endpoints
+      post 'register', to: 'users#register'
+      post 'login', to: 'users#login'
 
       # Job Application Screening Service endpoints
       post 'upload', to: 'documents#upload'
       post 'evaluate', to: 'evaluations#create'
       get 'result/:id', to: 'evaluations#show'
-      
+
       # Additional endpoints for managing reference documents
       resources :job_descriptions, only: [:create, :index, :show, :destroy]
       resources :case_studies, only: [:create, :index, :show, :destroy]

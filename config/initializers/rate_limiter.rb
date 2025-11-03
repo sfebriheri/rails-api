@@ -74,7 +74,7 @@ if !ENV['SKIP_RATE_LIMITER'] && ![
   end
 
   # Custom responses for rate limited requests
-  Rack::Attack.error_handler = proc do |req|
+  Rack::Attack.throttled_responder = lambda do |req|
     [429, { 'Content-Type' => 'application/json' },
      [JSON.generate({ error: 'Too many requests. Please try again later.' })]]
   end
