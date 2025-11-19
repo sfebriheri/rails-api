@@ -305,6 +305,13 @@ tramp
 *.tmproject
 tmtags
 
+# ===== CI/CD Runner =====
+# Prevent pushing to main branch
+.ci-runner
+.github/workflows/push-to-main.yml
+ci-runner-config.yml
+.runner-config
+
 # ===== Miscellaneous =====
 # Ignore local configuration overrides
 /config/local.yml
